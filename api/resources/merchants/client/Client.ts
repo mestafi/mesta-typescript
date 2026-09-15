@@ -9,11 +9,10 @@ import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCode
 import * as errors from "../../../../errors/index.js";
 import * as Mesta from "../../../index.js";
 import { AccountsClient } from "../resources/accounts/client/Client.js";
-import { DepositWalletAddressesClient } from "../resources/depositWalletAddresses/client/Client.js";
 import { FiatDepositsClient } from "../resources/fiatDeposits/client/Client.js";
 import { SourceWalletAddressesClient } from "../resources/sourceWalletAddresses/client/Client.js";
 import { StablecoinDepositsClient } from "../resources/stablecoinDeposits/client/Client.js";
-import { WithdrawalsClient } from "../resources/withdrawals/client/Client.js";
+import { TransactionsClient } from "../resources/transactions/client/Client.js";
 
 export declare namespace MerchantsClient {
     export type Options = BaseClientOptions;
@@ -23,23 +22,22 @@ export declare namespace MerchantsClient {
 
 export class MerchantsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<MerchantsClient.Options>;
-    protected _withdrawals: WithdrawalsClient | undefined;
     protected _accounts: AccountsClient | undefined;
+    protected _transactions: TransactionsClient | undefined;
     protected _stablecoinDeposits: StablecoinDepositsClient | undefined;
     protected _fiatDeposits: FiatDepositsClient | undefined;
     protected _sourceWalletAddresses: SourceWalletAddressesClient | undefined;
-    protected _depositWalletAddresses: DepositWalletAddressesClient | undefined;
 
     constructor(options: MerchantsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
     }
 
-    public get withdrawals(): WithdrawalsClient {
-        return (this._withdrawals ??= new WithdrawalsClient(this._options));
-    }
-
     public get accounts(): AccountsClient {
         return (this._accounts ??= new AccountsClient(this._options));
+    }
+
+    public get transactions(): TransactionsClient {
+        return (this._transactions ??= new TransactionsClient(this._options));
     }
 
     public get stablecoinDeposits(): StablecoinDepositsClient {
@@ -52,10 +50,6 @@ export class MerchantsClient {
 
     public get sourceWalletAddresses(): SourceWalletAddressesClient {
         return (this._sourceWalletAddresses ??= new SourceWalletAddressesClient(this._options));
-    }
-
-    public get depositWalletAddresses(): DepositWalletAddressesClient {
-        return (this._depositWalletAddresses ??= new DepositWalletAddressesClient(this._options));
     }
 
     /**

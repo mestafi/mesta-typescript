@@ -11,7 +11,6 @@ import * as errors from "../../../../errors/index.js";
 import * as Mesta from "../../../index.js";
 import { AssociatesClient } from "../resources/associates/client/Client.js";
 import { DepositBankAccountsClient } from "../resources/depositBankAccounts/client/Client.js";
-import { DepositWalletAddressesClient } from "../resources/depositWalletAddresses/client/Client.js";
 import { DocumentsClient } from "../resources/documents/client/Client.js";
 import { SourceWalletAddressesClient } from "../resources/sourceWalletAddresses/client/Client.js";
 import { TermsOfServiceClient } from "../resources/termsOfService/client/Client.js";
@@ -33,7 +32,6 @@ export class SendersClient {
     protected _documents: DocumentsClient | undefined;
     protected _termsOfService: TermsOfServiceClient | undefined;
     protected _depositBankAccounts: DepositBankAccountsClient | undefined;
-    protected _depositWalletAddresses: DepositWalletAddressesClient | undefined;
 
     constructor(options: SendersClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -65,10 +63,6 @@ export class SendersClient {
 
     public get depositBankAccounts(): DepositBankAccountsClient {
         return (this._depositBankAccounts ??= new DepositBankAccountsClient(this._options));
-    }
-
-    public get depositWalletAddresses(): DepositWalletAddressesClient {
-        return (this._depositWalletAddresses ??= new DepositWalletAddressesClient(this._options));
     }
 
     /**
@@ -167,126 +161,6 @@ export class SendersClient {
      * ## Overview
      * * Creates a new sender
      * * Supports both individual and business senders
-     * * Requirements vary by country and ownerType
-     *
-     * ## Validation Rules
-     * * **Important**: Always check validation rules before creating a sender
-     * * Validation rules endpoint: `GET /v1/validation-rules/senders`
-     * * Required query parameters:
-     *    * `ownerType=[individual|business]`
-     *   * `country=[ISO 3166-1 alpha-2 code]`
-     * * Example request:
-     * ```
-     * GET /v1/validation-rules/senders?ownerType=individual&country=MX
-     * ```
-     *
-     * @param {Mesta.CreateV1SendersRequest} request
-     * @param {SendersClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Mesta.BadRequestError}
-     * @throws {@link Mesta.UnauthorizedError}
-     * @throws {@link Mesta.ForbiddenError}
-     * @throws {@link Mesta.NotFoundError}
-     * @throws {@link Mesta.InternalServerError}
-     * @throws {@link errors.MestaError}
-     * @throws {@link errors.MestaTimeoutError}
-     *
-     * @example
-     *     await client.senders.createV1({
-     *         type: "individual",
-     *         type: "individual",
-     *         firstName: "firstName",
-     *         lastName: "lastName",
-     *         birthDate: "2023-01-15",
-     *         email: "email",
-     *         phone: "phone",
-     *         addresses: [{
-     *                 street: "street",
-     *                 city: "city",
-     *                 postalCode: "12345 or 00000",
-     *                 country: "country"
-     *             }],
-     *         identity: {
-     *             documentType: "PASSPORT",
-     *             countryCode: "countryCode",
-     *             documentNumber: "documentNumber"
-     *         },
-     *         gender: "male",
-     *         occupation: "accountant"
-     *     })
-     */
-    public createV1(
-        request: Mesta.CreateV1SendersRequest,
-        requestOptions?: SendersClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.CreateV1SendersResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createV1(request, requestOptions));
-    }
-
-    private async __createV1(
-        request: Mesta.CreateV1SendersRequest,
-        requestOptions?: SendersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.CreateV1SendersResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.MestaEnvironment.Production,
-                "v1/senders",
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: _response.body as Mesta.CreateV1SendersResponse, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
-                case 401:
-                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
-                case 403:
-                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
-                case 404:
-                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
-                case 500:
-                    throw new Mesta.InternalServerError(
-                        _response.error.body as Mesta.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.MestaError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/senders");
-    }
-
-    /**
-     * ## Overview
-     * * Creates a new sender
-     * * Supports both individual and business senders
      * * Includes additional onboarding fields used for compliance review
      * * Requirements vary by country and ownerType
      *
@@ -308,7 +182,7 @@ export class SendersClient {
      * * `websiteAbsenceReason` is required for business senders when `websiteUrl` is not provided
      * * If `isFinancialInstitution` is `true`, upload the FI registration proof using `POST /v1/senders/{senderId}/documents` with document type `fi_registration_proof` before calling `POST /v1/senders/{senderId}/verify`
      *
-     * @param {Mesta.CreateV2SendersRequest} request
+     * @param {Mesta.CreateSendersRequest} request
      * @param {SendersClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Mesta.BadRequestError}
@@ -320,7 +194,7 @@ export class SendersClient {
      * @throws {@link errors.MestaTimeoutError}
      *
      * @example
-     *     await client.senders.createV2({
+     *     await client.senders.create({
      *         expectedMonthlyVolumeEstimate: 1.1,
      *         averageTransactionSize: 1.1,
      *         primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions"],
@@ -347,17 +221,17 @@ export class SendersClient {
      *         occupation: "accountant"
      *     })
      */
-    public createV2(
-        request: Mesta.CreateV2SendersRequest,
+    public create(
+        request: Mesta.CreateSendersRequest,
         requestOptions?: SendersClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.CreateV2SendersResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createV2(request, requestOptions));
+    ): core.HttpResponsePromise<Mesta.CreateSendersResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
-    private async __createV2(
-        request: Mesta.CreateV2SendersRequest,
+    private async __create(
+        request: Mesta.CreateSendersRequest,
         requestOptions?: SendersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.CreateV2SendersResponse>> {
+    ): Promise<core.WithRawResponse<Mesta.CreateSendersResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -385,7 +259,7 @@ export class SendersClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Mesta.CreateV2SendersResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Mesta.CreateSendersResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -1042,10 +916,7 @@ export class SendersClient {
                 case 404:
                     throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
                 case 429:
-                    throw new Mesta.TooManyRequestsError(
-                        _response.error.body as Mesta.TooManyRequestsErrorBody,
-                        _response.rawResponse,
-                    );
+                    throw new Mesta.TooManyRequestsError(_response.error.body as unknown, _response.rawResponse);
                 case 500:
                     throw new Mesta.InternalServerError(
                         _response.error.body as Mesta.ErrorResponse,
@@ -1065,99 +936,6 @@ export class SendersClient {
             _response.rawResponse,
             "POST",
             "/v1/senders/{senderId}/accounts/mock-deposit",
-        );
-    }
-
-    /**
-     * Generates ledger accounts and virtual bank accounts for a sender. These accounts are used for tracking balances and transactions.
-     *
-     * @param {Mesta.GenerateLedgerAccountsSendersRequest} request
-     * @param {SendersClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Mesta.BadRequestError}
-     * @throws {@link Mesta.UnauthorizedError}
-     * @throws {@link Mesta.ForbiddenError}
-     * @throws {@link Mesta.NotFoundError}
-     * @throws {@link Mesta.InternalServerError}
-     * @throws {@link errors.MestaError}
-     * @throws {@link errors.MestaTimeoutError}
-     *
-     * @example
-     *     await client.senders.generateLedgerAccounts({
-     *         id: "id"
-     *     })
-     */
-    public generateLedgerAccounts(
-        request: Mesta.GenerateLedgerAccountsSendersRequest,
-        requestOptions?: SendersClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.GenerateLedgerAccountsSendersResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__generateLedgerAccounts(request, requestOptions));
-    }
-
-    private async __generateLedgerAccounts(
-        request: Mesta.GenerateLedgerAccountsSendersRequest,
-        requestOptions?: SendersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.GenerateLedgerAccountsSendersResponse>> {
-        const { id } = request;
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.MestaEnvironment.Production,
-                `v1/senders/${core.url.encodePathParam(id)}/generate-ledger-accounts`,
-            ),
-            method: "POST",
-            headers: _headers,
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: _response.body as Mesta.GenerateLedgerAccountsSendersResponse,
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
-                case 401:
-                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
-                case 403:
-                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
-                case 404:
-                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
-                case 500:
-                    throw new Mesta.InternalServerError(
-                        _response.error.body as Mesta.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.MestaError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/v1/senders/{id}/generate-ledger-accounts",
         );
     }
 }

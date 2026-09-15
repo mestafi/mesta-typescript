@@ -1,6 +1,5 @@
 export * from "./CancelOrdersResponse.js";
-export * from "./CreateV1OrdersResponse.js";
-export * from "./CreateV2OrdersResponse.js";
+export * from "./CreateOrdersResponse.js";
 export * from "./GetDepositBankAccountOrdersResponse.js";
 export * from "./GetDepositWalletAddressOrdersResponse.js";
 export * from "./GetOrdersResponse.js";

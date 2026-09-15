@@ -1,5 +1,4 @@
 export type { DeleteSendersRequest } from "./DeleteSendersRequest.js";
-export type { GenerateLedgerAccountsSendersRequest } from "./GenerateLedgerAccountsSendersRequest.js";
 export type { GetBalancesSendersRequest } from "./GetBalancesSendersRequest.js";
 export type { GetSendersRequest } from "./GetSendersRequest.js";
 export type { ListSendersRequest } from "./ListSendersRequest.js";

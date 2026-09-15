@@ -1,14 +1,8 @@
-export { CreateV2BeneficiariesRequest } from "./CreateV2BeneficiariesRequest.js";
-export { CreateV3BeneficiariesRequest } from "./CreateV3BeneficiariesRequest.js";
+export { CreateBeneficiariesRequest } from "./CreateBeneficiariesRequest.js";
 export type { DeleteBeneficiariesRequest } from "./DeleteBeneficiariesRequest.js";
-export type { GetV1BeneficiariesRequest } from "./GetV1BeneficiariesRequest.js";
-export type { GetV2BeneficiariesRequest } from "./GetV2BeneficiariesRequest.js";
-export type { ListV1BeneficiariesRequest } from "./ListV1BeneficiariesRequest.js";
-export type { ListV2BeneficiariesRequest } from "./ListV2BeneficiariesRequest.js";
+export type { GetBeneficiariesRequest } from "./GetBeneficiariesRequest.js";
+export type { ListBeneficiariesRequest } from "./ListBeneficiariesRequest.js";
 export type { LookupBankBeneficiariesRequest } from "./LookupBankBeneficiariesRequest.js";
 export { SimulateVerificationResultBeneficiariesRequest } from "./SimulateVerificationResultBeneficiariesRequest.js";
-export type { UpdateV1BeneficiariesRequest } from "./UpdateV1BeneficiariesRequest.js";
-export { UpdateV2BeneficiariesRequest } from "./UpdateV2BeneficiariesRequest.js";
-export { UpdateVerificationBeneficiariesRequest } from "./UpdateVerificationBeneficiariesRequest.js";
-export type { ValidateBeneficiariesRequest } from "./ValidateBeneficiariesRequest.js";
+export { UpdateBeneficiariesRequest } from "./UpdateBeneficiariesRequest.js";
 export type { VerifyBeneficiariesRequest } from "./VerifyBeneficiariesRequest.js";

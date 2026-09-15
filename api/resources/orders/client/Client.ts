@@ -141,95 +141,6 @@ export class OrdersClient {
     }
 
     /**
-     * Initiates a order for converting and transferring USD or USDC to a specified target currency, using a previously obtained quote.
-     *
-     * @param {Mesta.CreateV1OrdersRequest} request
-     * @param {OrdersClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Mesta.BadRequestError}
-     * @throws {@link Mesta.UnauthorizedError}
-     * @throws {@link Mesta.ForbiddenError}
-     * @throws {@link Mesta.NotFoundError}
-     * @throws {@link Mesta.InternalServerError}
-     * @throws {@link errors.MestaError}
-     * @throws {@link errors.MestaTimeoutError}
-     *
-     * @example
-     *     await client.orders.createV1({
-     *         acceptedQuoteId: "acceptedQuoteId",
-     *         senderId: "senderId",
-     *         beneficiaryId: "beneficiaryId"
-     *     })
-     */
-    public createV1(
-        request: Mesta.CreateV1OrdersRequest,
-        requestOptions?: OrdersClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.CreateV1OrdersResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createV1(request, requestOptions));
-    }
-
-    private async __createV1(
-        request: Mesta.CreateV1OrdersRequest,
-        requestOptions?: OrdersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.CreateV1OrdersResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.MestaEnvironment.Production,
-                "v1/orders",
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: _response.body as Mesta.CreateV1OrdersResponse, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
-                case 401:
-                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
-                case 403:
-                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
-                case 404:
-                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
-                case 500:
-                    throw new Mesta.InternalServerError(
-                        _response.error.body as Mesta.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.MestaError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/orders");
-    }
-
-    /**
      * Retrieves detailed information about a specific order, including its current status and progress.
      *
      * @param {Mesta.GetOrdersRequest} request
@@ -585,7 +496,7 @@ export class OrdersClient {
     /**
      * Create a new order using a payment method ID. This is the recommended way to create orders. Requires an accepted quote, a sender, and a payment method.
      *
-     * @param {Mesta.CreateV2OrdersRequest} request
+     * @param {Mesta.CreateOrdersRequest} request
      * @param {OrdersClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Mesta.BadRequestError}
@@ -596,23 +507,23 @@ export class OrdersClient {
      * @throws {@link errors.MestaTimeoutError}
      *
      * @example
-     *     await client.orders.createV2({
+     *     await client.orders.create({
      *         senderId: "550e8400-e29b-41d4-a716-446655440001",
      *         paymentMethodId: "550e8400-e29b-41d4-a716-446655440002",
      *         acceptedQuoteId: "550e8400-e29b-41d4-a716-446655440003"
      *     })
      */
-    public createV2(
-        request: Mesta.CreateV2OrdersRequest,
+    public create(
+        request: Mesta.CreateOrdersRequest,
         requestOptions?: OrdersClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.CreateV2OrdersResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createV2(request, requestOptions));
+    ): core.HttpResponsePromise<Mesta.CreateOrdersResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
-    private async __createV2(
-        request: Mesta.CreateV2OrdersRequest,
+    private async __create(
+        request: Mesta.CreateOrdersRequest,
         requestOptions?: OrdersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.CreateV2OrdersResponse>> {
+    ): Promise<core.WithRawResponse<Mesta.CreateOrdersResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -640,7 +551,7 @@ export class OrdersClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Mesta.CreateV2OrdersResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Mesta.CreateOrdersResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

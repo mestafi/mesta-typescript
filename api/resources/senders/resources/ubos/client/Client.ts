@@ -24,110 +24,6 @@ export class UbosClient {
     }
 
     /**
-     * Creates a new UBO (Ultimate Beneficial Owner) for a specific sender.  Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
-     *
-     * @param {Mesta.senders.CreateV1UbosRequest} request
-     * @param {UbosClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Mesta.BadRequestError}
-     * @throws {@link Mesta.UnauthorizedError}
-     * @throws {@link Mesta.ForbiddenError}
-     * @throws {@link Mesta.NotFoundError}
-     * @throws {@link Mesta.InternalServerError}
-     * @throws {@link errors.MestaError}
-     * @throws {@link errors.MestaTimeoutError}
-     *
-     * @example
-     *     await client.senders.ubos.createV1({
-     *         firstName: "firstName",
-     *         lastName: "lastName",
-     *         birthDate: "2023-01-15",
-     *         phone: "phone",
-     *         email: "email",
-     *         ownershipPercent: 1.1,
-     *         address: {
-     *             street: "street",
-     *             city: "city",
-     *             postalCode: "12345 or 00000",
-     *             country: "country"
-     *         },
-     *         senderId: "senderId",
-     *         identity: {
-     *             documentType: "PASSPORT",
-     *             countryCode: "countryCode",
-     *             documentNumber: "documentNumber"
-     *         }
-     *     })
-     */
-    public createV1(
-        request: Mesta.senders.CreateV1UbosRequest,
-        requestOptions?: UbosClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.senders.CreateV1UbosResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createV1(request, requestOptions));
-    }
-
-    private async __createV1(
-        request: Mesta.senders.CreateV1UbosRequest,
-        requestOptions?: UbosClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.senders.CreateV1UbosResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.MestaEnvironment.Production,
-                "v1/senders/ubo",
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: _response.body as Mesta.senders.CreateV1UbosResponse, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
-                case 401:
-                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
-                case 403:
-                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
-                case 404:
-                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
-                case 500:
-                    throw new Mesta.InternalServerError(
-                        _response.error.body as Mesta.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.MestaError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/senders/ubo");
-    }
-
-    /**
      * Creates a new UBO (Ultimate Beneficial Owner) for a specific sender. Note: Document requirements (documentFront, documentBack) vary by country. Please refer to the validation-rules endpoint with ownerType='business' and the specific country to determine exact documentation requirements. Multiple UBOs can be added by calling this endpoint multiple times. The total ownership percentage across all UBOs should not exceed 100%.
      *
      * Additional v2 details:
@@ -143,7 +39,7 @@ export class UbosClient {
      * * `pepQuestionnaire` is supported. It is required when `pepDeclaration` is `true`.
      * * `pepQuestionnaire.declarationType` controls which section is required: `self` (for `SELF`) or `association` (for `IMMEDIATE_FAMILY` and `CLOSE_ASSOCIATE`).
      *
-     * @param {Mesta.senders.CreateV2UbosRequest} request
+     * @param {Mesta.senders.CreateUbosRequest} request
      * @param {UbosClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Mesta.BadRequestError}
@@ -155,7 +51,7 @@ export class UbosClient {
      * @throws {@link errors.MestaTimeoutError}
      *
      * @example
-     *     await client.senders.ubos.createV2({
+     *     await client.senders.ubos.create({
      *         firstName: "firstName",
      *         lastName: "lastName",
      *         birthDate: "2023-01-15",
@@ -177,17 +73,17 @@ export class UbosClient {
      *         pepDeclaration: true
      *     })
      */
-    public createV2(
-        request: Mesta.senders.CreateV2UbosRequest,
+    public create(
+        request: Mesta.senders.CreateUbosRequest,
         requestOptions?: UbosClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.senders.CreateV2UbosResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createV2(request, requestOptions));
+    ): core.HttpResponsePromise<Mesta.senders.CreateUbosResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
-    private async __createV2(
-        request: Mesta.senders.CreateV2UbosRequest,
+    private async __create(
+        request: Mesta.senders.CreateUbosRequest,
         requestOptions?: UbosClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.senders.CreateV2UbosResponse>> {
+    ): Promise<core.WithRawResponse<Mesta.senders.CreateUbosResponse>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -215,7 +111,7 @@ export class UbosClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Mesta.senders.CreateV2UbosResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Mesta.senders.CreateUbosResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

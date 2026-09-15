@@ -1,6 +1,9 @@
 export * from "./apiKeys/client/requests/index.js";
 export * as apiKeys from "./apiKeys/index.js";
 export * from "./apiKeys/types/index.js";
+export * from "./auth/client/requests/index.js";
+export * as auth from "./auth/index.js";
+export * from "./auth/types/index.js";
 export * from "./beneficiaries/client/requests/index.js";
 export * as beneficiaries from "./beneficiaries/index.js";
 export * from "./beneficiaries/types/index.js";

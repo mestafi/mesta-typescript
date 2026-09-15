@@ -4,7 +4,6 @@ import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../Ba
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
 import * as core from "../../../../../../core/index.js";
-import { mergeAdditionalBodyParameters } from "../../../../../../core/requestBody.js";
 import * as environments from "../../../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../../../errors/index.js";
@@ -114,97 +113,6 @@ export class TermsOfServiceClient {
     }
 
     /**
-     * Generates a Terms of Service acceptance link for a sender. If a valid link already exists and regenerate is not set to true, returns the existing link.
-     *
-     * @param {Mesta.senders.CreateLinkTermsOfServiceRequest} request
-     * @param {TermsOfServiceClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Mesta.BadRequestError}
-     * @throws {@link Mesta.UnauthorizedError}
-     * @throws {@link Mesta.ForbiddenError}
-     * @throws {@link Mesta.NotFoundError}
-     * @throws {@link Mesta.InternalServerError}
-     * @throws {@link errors.MestaError}
-     * @throws {@link errors.MestaTimeoutError}
-     *
-     * @example
-     *     await client.senders.termsOfService.createLink({
-     *         id: "id"
-     *     })
-     */
-    public createLink(
-        request: Mesta.senders.CreateLinkTermsOfServiceRequest,
-        requestOptions?: TermsOfServiceClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.senders.CreateLinkTermsOfServiceResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createLink(request, requestOptions));
-    }
-
-    private async __createLink(
-        request: Mesta.senders.CreateLinkTermsOfServiceRequest,
-        requestOptions?: TermsOfServiceClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.senders.CreateLinkTermsOfServiceResponse>> {
-        const { id, ..._body } = request;
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.MestaEnvironment.Production,
-                `v1/senders/${core.url.encodePathParam(id)}/tos-link`,
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: _response.body as Mesta.senders.CreateLinkTermsOfServiceResponse,
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
-                case 401:
-                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
-                case 403:
-                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
-                case 404:
-                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
-                case 500:
-                    throw new Mesta.InternalServerError(
-                        _response.error.body as Mesta.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.MestaError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/senders/{id}/tos-link");
-    }
-
-    /**
      * Retrieves the Terms of Service acceptance details for a given token. This is a public endpoint that does not require authentication.
      *
      * @param {Mesta.senders.GetAcceptanceTermsOfServiceRequest} request
@@ -286,94 +194,6 @@ export class TermsOfServiceClient {
             _response.rawResponse,
             "GET",
             "/v1/senders/tos-acceptance/{token}",
-        );
-    }
-
-    /**
-     * Accepts the Terms of Service on behalf of a sender using the provided token. This is a public endpoint that does not require authentication. The client's IP address and user agent are recorded automatically.
-     *
-     * @param {Mesta.senders.AcceptTermsOfServiceRequest} request
-     * @param {TermsOfServiceClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Mesta.BadRequestError}
-     * @throws {@link Mesta.NotFoundError}
-     * @throws {@link Mesta.ConflictError}
-     * @throws {@link Mesta.InternalServerError}
-     * @throws {@link errors.MestaError}
-     * @throws {@link errors.MestaTimeoutError}
-     *
-     * @example
-     *     await client.senders.termsOfService.accept({
-     *         token: "token"
-     *     })
-     */
-    public accept(
-        request: Mesta.senders.AcceptTermsOfServiceRequest,
-        requestOptions?: TermsOfServiceClient.RequestOptions,
-    ): core.HttpResponsePromise<Mesta.senders.AcceptTermsOfServiceResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__accept(request, requestOptions));
-    }
-
-    private async __accept(
-        request: Mesta.senders.AcceptTermsOfServiceRequest,
-        requestOptions?: TermsOfServiceClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Mesta.senders.AcceptTermsOfServiceResponse>> {
-        const { token } = request;
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
-            requestOptions?.headers,
-        );
-        const _response = await (this._options.fetcher ?? core.fetcher)({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.MestaEnvironment.Production,
-                `v1/senders/tos-acceptance/${core.url.encodePathParam(token)}/accept`,
-            ),
-            method: "POST",
-            headers: _headers,
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: _response.body as Mesta.senders.AcceptTermsOfServiceResponse,
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 400:
-                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
-                case 404:
-                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
-                case 409:
-                    throw new Mesta.ConflictError(_response.error.body as unknown, _response.rawResponse);
-                case 500:
-                    throw new Mesta.InternalServerError(
-                        _response.error.body as Mesta.ErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.MestaError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/v1/senders/tos-acceptance/{token}/accept",
         );
     }
 }

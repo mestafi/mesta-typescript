@@ -3,6 +3,8 @@
 import type * as Mesta from "../index.js";
 
 export interface BusinessBeneficiary {
+    /** The type for the beneficiary (business). */
+    type: BusinessBeneficiary.Type;
     /** Full name of the business beneficiary. */
     fullName: string;
     /** Email address of the beneficiary. */
@@ -27,6 +29,12 @@ export interface BusinessBeneficiary {
 }
 
 export namespace BusinessBeneficiary {
+    /** The type for the beneficiary (business). */
+    export const Type = {
+        Business: "business",
+    } as const;
+    export type Type = (typeof Type)[keyof typeof Type];
+
     /**
      * Postal address.
      */

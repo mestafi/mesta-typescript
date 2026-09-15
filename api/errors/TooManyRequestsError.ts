@@ -2,12 +2,9 @@
 
 import type * as core from "../../core/index.js";
 import * as errors from "../../errors/index.js";
-import type * as Mesta from "../index.js";
 
 export class TooManyRequestsError extends errors.MestaError {
-    public declare readonly body: Mesta.TooManyRequestsErrorBody;
-
-    constructor(body: Mesta.TooManyRequestsErrorBody, rawResponse?: core.RawResponse) {
+    constructor(body?: unknown, rawResponse?: core.RawResponse) {
         super({
             message: "TooManyRequestsError",
             statusCode: 429,

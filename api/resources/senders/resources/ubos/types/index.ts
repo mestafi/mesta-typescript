@@ -1,5 +1,4 @@
-export * from "./CreateV1UbosResponse.js";
-export * from "./CreateV2UbosResponse.js";
+export * from "./CreateUbosResponse.js";
 export * from "./DeleteUbosResponse.js";
 export * from "./GetUbosResponse.js";
 export * from "./GetVerificationUrlUbosRequestAction.js";
