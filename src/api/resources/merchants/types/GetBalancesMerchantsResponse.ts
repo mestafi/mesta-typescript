@@ -1,0 +1,19 @@
+
+export interface GetBalancesMerchantsResponse {
+    data?: GetBalancesMerchantsResponse.Data.Item[] | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace GetBalancesMerchantsResponse {
+    export type Data = Data.Item[];
+
+    export namespace Data {
+        export interface Item {
+            /** Currency code (e.g., USD, EUR, GBP, USDC_ETH, USDT_TRX) */
+            currency?: string | undefined;
+            /** Current balance amount */
+            balance?: number | undefined;
+        }
+    }
+}

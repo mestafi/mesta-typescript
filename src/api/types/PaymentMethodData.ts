@@ -1,0 +1,44 @@
+
+import type * as Mesta from "../index.js";
+
+/**
+ * Payment method data. Structure depends on type field.
+ */
+export type PaymentMethodData =
+    | Mesta.PaymentMethodData.BankAccount
+    | Mesta.PaymentMethodData.Pix
+    | Mesta.PaymentMethodData.Instapay
+    | Mesta.PaymentMethodData.SwiftpayPesonet
+    | Mesta.PaymentMethodData.Spei
+    | Mesta.PaymentMethodData.MobileMoney
+    | Mesta.PaymentMethodData.CryptoWallet;
+
+export namespace PaymentMethodData {
+    export interface BankAccount extends Mesta.BankAccountInfo {
+        type: "bank_account";
+    }
+
+    export interface Pix extends Mesta.PixInfo {
+        type: "pix";
+    }
+
+    export interface Instapay extends Mesta.InstapayInfo {
+        type: "instapay";
+    }
+
+    export interface SwiftpayPesonet extends Mesta.SwiftpayPesonetInfo {
+        type: "swiftpay_pesonet";
+    }
+
+    export interface Spei extends Mesta.SpeiInfo {
+        type: "spei";
+    }
+
+    export interface MobileMoney extends Mesta.MobileMoneyInfo {
+        type: "mobile_money";
+    }
+
+    export interface CryptoWallet extends Mesta.CryptoWalletInfo {
+        type: "crypto_wallet";
+    }
+}

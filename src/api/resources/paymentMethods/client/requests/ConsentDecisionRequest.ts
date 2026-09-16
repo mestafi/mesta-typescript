@@ -1,0 +1,22 @@
+
+/**
+ * @example
+ *     {
+ *         id: "id"
+ *     }
+ */
+export interface ConsentDecisionRequest {
+    /** Payment method ID */
+    id: string;
+    /** The consent decision — either approve or decline the payment method */
+    status?: ConsentDecisionRequest.Status;
+}
+
+export namespace ConsentDecisionRequest {
+    /** The consent decision — either approve or decline the payment method */
+    export const Status = {
+        Approved: "approved",
+        Declined: "declined",
+    } as const;
+    export type Status = (typeof Status)[keyof typeof Status];
+}

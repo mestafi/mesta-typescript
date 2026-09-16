@@ -1,0 +1,20 @@
+
+export interface GetBalancesSendersResponse {
+    /** Array of currency-balance pairs */
+    data?: GetBalancesSendersResponse.Data.Item[] | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace GetBalancesSendersResponse {
+    export type Data = Data.Item[];
+
+    export namespace Data {
+        export interface Item {
+            /** Currency code (e.g., USD, EUR, GBP) */
+            currency: string;
+            /** Current balance as a decimal string */
+            balance: string;
+        }
+    }
+}

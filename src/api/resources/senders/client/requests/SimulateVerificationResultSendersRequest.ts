@@ -1,0 +1,23 @@
+
+/**
+ * @example
+ *     {
+ *         senderId: "senderId",
+ *         result: "APPROVED"
+ *     }
+ */
+export interface SimulateVerificationResultSendersRequest {
+    /** Unique identifier for the sender. */
+    senderId: string;
+    /** The verification outcome to simulate. */
+    result: SimulateVerificationResultSendersRequest.Result;
+}
+
+export namespace SimulateVerificationResultSendersRequest {
+    /** The verification outcome to simulate. */
+    export const Result = {
+        Approved: "APPROVED",
+        Declined: "DECLINED",
+    } as const;
+    export type Result = (typeof Result)[keyof typeof Result];
+}

@@ -1,0 +1,61 @@
+
+/**
+ * @example
+ *     {
+ *         events: ["order:*", "sender:kyb_approved", "fiat_deposit:settled"],
+ *         url: "https://example.com/webhooks/mesta"
+ *     }
+ */
+export interface CreateWebhooksRequest {
+    events: CreateWebhooksRequest.Events.Item[];
+    /** The URL where events will be posted. */
+    url: string;
+}
+
+export namespace CreateWebhooksRequest {
+    export type Events = Events.Item[];
+
+    export namespace Events {
+        /** The events to subscribe the webhook to. */
+        export const Item = {
+            Order: "order:*",
+            OrderCreated: "order:created",
+            OrderAwaitingFunds: "order:awaiting_funds",
+            OrderAwaitingFundsTimeout: "order:awaiting_funds_timeout",
+            OrderFundsReceived: "order:funds_received",
+            OrderInProgress: "order:in_progress",
+            OrderSentToBeneficiary: "order:sent_to_beneficiary",
+            OrderSuccess: "order:success",
+            OrderFailed: "order:failed",
+            OrderCancelled: "order:cancelled",
+            OrderReturned: "order:returned",
+            OrderProofOfPaymentReceived: "order:proof_of_payment_received",
+            OrderInvoiceReviewRequired: "order:invoice_review_required",
+            Sender: "sender:*",
+            SenderCreated: "sender:created",
+            SenderKybPending: "sender:kyb_pending",
+            SenderKybApproved: "sender:kyb_approved",
+            SenderKybDeclined: "sender:kyb_declined",
+            SenderKycPending: "sender:kyc_pending",
+            SenderKycApproved: "sender:kyc_approved",
+            SenderKycDeclined: "sender:kyc_declined",
+            SenderTosLinkGenerated: "sender:tos_link_generated",
+            SenderTosAccepted: "sender:tos_accepted",
+            SenderActivated: "sender:activated",
+            SenderDeactivated: "sender:deactivated",
+            Ubo: "ubo:*",
+            UboCreated: "ubo:created",
+            UboVerificationPending: "ubo:verification_pending",
+            UboVerificationApproved: "ubo:verification_approved",
+            UboVerificationDeclined: "ubo:verification_declined",
+            Beneficiary: "beneficiary:*",
+            BeneficiaryCreated: "beneficiary:created",
+            BeneficiaryVerificationApproved: "beneficiary:verification_approved",
+            BeneficiaryVerificationDeclined: "beneficiary:verification_declined",
+            FiatDepositSettled: "fiat_deposit:settled",
+            StablecoinDepositSettled: "stablecoin_deposit:settled",
+            StablecoinDepositRejected: "stablecoin_deposit:rejected",
+        } as const;
+        export type Item = (typeof Item)[keyof typeof Item];
+    }
+}

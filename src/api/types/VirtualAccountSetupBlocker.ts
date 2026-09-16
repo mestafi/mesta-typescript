@@ -1,0 +1,72 @@
+
+import type * as Mesta from "../index.js";
+
+/**
+ * A requirement preventing the setup request from progressing.
+ */
+export interface VirtualAccountSetupBlocker {
+    /** Machine-readable blocker code. */
+    code: VirtualAccountSetupBlocker.Code;
+    /** Sender, UBO, or representative affected by this blocker. */
+    subject?: VirtualAccountSetupBlocker.Subject | undefined;
+    /** Missing public properties on the identified subject. Requirements sharing the same subject and action are grouped in one blocker. */
+    fields?: VirtualAccountSetupBlocker.Fields.Item[] | undefined;
+    action?: Mesta.VirtualAccountSetupAction | undefined;
+}
+
+export namespace VirtualAccountSetupBlocker {
+    /** Machine-readable blocker code. */
+    export const Code = {
+        MissingData: "missing_data",
+        MissingAssociate: "missing_associate",
+        MestaAdminActionRequired: "mesta_admin_action_required",
+        SenderVerificationPending: "sender_verification_pending",
+        UboVerificationPending: "ubo_verification_pending",
+        AssociateVerificationPending: "associate_verification_pending",
+        SenderInactive: "sender_inactive",
+        DepositSourceNotSender: "deposit_source_not_sender",
+    } as const;
+    export type Code = (typeof Code)[keyof typeof Code];
+
+    /**
+     * Sender, UBO, or representative affected by this blocker.
+     */
+    export interface Subject {
+        type: Subject.Type;
+        id?: string | undefined;
+        roles?: string[] | undefined;
+        minimumCount?: number | undefined;
+    }
+
+    export namespace Subject {
+        export const Type = {
+            Sender: "sender",
+            Ubo: "ubo",
+            Associate: "associate",
+        } as const;
+        export type Type = (typeof Type)[keyof typeof Type];
+    }
+
+    export type Fields = Fields.Item[];
+
+    export namespace Fields {
+        export interface Item {
+            /** Public property missing from the subject. This is never an internal canonical requirement key and may be nested inside an action body container. */
+            name?: string | undefined;
+            label: string;
+            /** For a document field, the exact value to send as the upload request's `type`. */
+            documentType?: Item.DocumentType | undefined;
+        }
+
+        export namespace Item {
+            /** For a document field, the exact value to send as the upload request's `type`. */
+            export const DocumentType = {
+                BusinessRegistrationProof: "business_registration_proof",
+                AddressProof: "address_proof",
+                FiRegistrationProof: "fi_registration_proof",
+                DirectorsRegistry: "directors_registry",
+            } as const;
+            export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType];
+        }
+    }
+}

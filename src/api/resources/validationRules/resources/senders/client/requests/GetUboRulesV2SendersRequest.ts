@@ -1,0 +1,16 @@
+
+import type * as Mesta from "../../../../../../index.js";
+
+/**
+ * @example
+ *     {
+ *         ownerType: "business",
+ *         country: "country"
+ *     }
+ */
+export interface GetUboRulesV2SendersRequest {
+    /** Type of sender entity (must be business for UBO rules) */
+    ownerType: Mesta.validationRules.GetUboRulesV2SendersRequestOwnerType;
+    /** Two-letter ISO country code */
+    country: string;
+}

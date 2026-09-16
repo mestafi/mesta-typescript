@@ -1,0 +1,18 @@
+
+import type * as Mesta from "../../../../../../index.js";
+
+/**
+ * @example
+ *     {
+ *         beneficiaryId: "beneficiaryId",
+ *         documentId: "documentId"
+ *     }
+ */
+export interface GetPresignedUrlDocumentsRequest {
+    /** Unique identifier of the beneficiary */
+    beneficiaryId: string;
+    /** Unique identifier of the document */
+    documentId: string;
+    /** Type of document to retrieve */
+    type?: Mesta.beneficiaries.GetPresignedUrlDocumentsRequestType;
+}

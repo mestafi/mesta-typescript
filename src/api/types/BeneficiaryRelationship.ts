@@ -1,0 +1,21 @@
+
+/** Relationship between sender and beneficiary */
+export const BeneficiaryRelationship = {
+    BusinessPartner: "business_partner",
+    Children: "children",
+    Colleague: "colleague",
+    Creditor: "creditor",
+    Customer: "customer",
+    Debtor: "debtor",
+    Director: "director",
+    Employee: "employee",
+    Franchisee: "franchisee",
+    HoldingCompany: "holding_company",
+    Self: "self",
+    SubsidiaryCompany: "subsidiary_company",
+    Supplier: "supplier",
+    Parents: "parents",
+    Relative: "relative",
+    Sibling: "sibling",
+} as const;
+export type BeneficiaryRelationship = (typeof BeneficiaryRelationship)[keyof typeof BeneficiaryRelationship];

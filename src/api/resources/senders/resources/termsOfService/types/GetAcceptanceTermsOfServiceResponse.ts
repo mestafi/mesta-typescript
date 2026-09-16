@@ -1,0 +1,27 @@
+
+export interface GetAcceptanceTermsOfServiceResponse {
+    data?: GetAcceptanceTermsOfServiceResponse.Data | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace GetAcceptanceTermsOfServiceResponse {
+    export interface Data {
+        /** Name of the sender */
+        senderName?: string | undefined;
+        /** Email of the sender */
+        senderEmail?: string | undefined;
+        /** Name of the associated merchant */
+        merchantName?: string | undefined;
+        /** Version of the Terms of Service */
+        tosVersion?: string | undefined;
+        /** Whether the TOS acceptance link has expired */
+        isExpired?: boolean | undefined;
+        /** Whether the TOS has already been accepted */
+        isAccepted?: boolean | undefined;
+        /** When the TOS link was generated */
+        generatedAt?: string | undefined;
+        /** When the TOS link expires */
+        expiresAt?: string | undefined;
+    }
+}

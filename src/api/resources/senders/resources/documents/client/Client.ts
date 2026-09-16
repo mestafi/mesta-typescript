@@ -1,0 +1,214 @@
+
+import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../BaseClient.js";
+import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
+import * as core from "../../../../../../core/index.js";
+import { mergeAdditionalBodyParameters } from "../../../../../../core/requestBody.js";
+import * as environments from "../../../../../../environments.js";
+import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStatusCodeError.js";
+import * as errors from "../../../../../../errors/index.js";
+import * as Mesta from "../../../../../index.js";
+
+export declare namespace DocumentsClient {
+    export type Options = BaseClientOptions;
+
+    export interface RequestOptions extends BaseRequestOptions {}
+}
+
+export class DocumentsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<DocumentsClient.Options>;
+
+    constructor(options: DocumentsClient.Options) {
+        this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    /**
+     * Uploads one Base64-encoded document for a specific sender. Use type `directors_registry` for a Directors' and shareholders' registry. Multiple registry files are supported by calling this endpoint once per file.
+     *
+     * @param {Mesta.senders.UploadDocumentsRequest} request
+     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.documents.upload({
+     *         senderId: "senderId",
+     *         fileName: "fileName",
+     *         type: "",
+     *         blob: "blob"
+     *     })
+     */
+    public upload(
+        request: Mesta.senders.UploadDocumentsRequest,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.senders.UploadDocumentsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__upload(request, requestOptions));
+    }
+
+    private async __upload(
+        request: Mesta.senders.UploadDocumentsRequest,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.senders.UploadDocumentsResponse>> {
+        const { senderId, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/documents`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.senders.UploadDocumentsResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/senders/{senderId}/documents",
+        );
+    }
+
+    /**
+     * Deletes a specific document associated with a sender.
+     *
+     * @param {Mesta.senders.DeleteDocumentsRequest} request
+     * @param {DocumentsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.documents.delete({
+     *         senderId: "senderId",
+     *         documentId: "documentId"
+     *     })
+     */
+    public delete(
+        request: Mesta.senders.DeleteDocumentsRequest,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.senders.DeleteDocumentsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
+    }
+
+    private async __delete(
+        request: Mesta.senders.DeleteDocumentsRequest,
+        requestOptions?: DocumentsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.senders.DeleteDocumentsResponse>> {
+        const { senderId, documentId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/documents/${core.url.encodePathParam(documentId)}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.senders.DeleteDocumentsResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/v1/senders/{senderId}/documents/{documentId}",
+        );
+    }
+}

@@ -1,0 +1,189 @@
+
+export interface GetV2SendersResponse {
+    data?: GetV2SendersResponse.Data | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace GetV2SendersResponse {
+    export interface Data {
+        /** Unique identifier for the validation rules */
+        id?: string | undefined;
+        /** Version number of the rules */
+        version?: number | undefined;
+        /** Timestamp when the rules were created */
+        createdAt?: string | undefined;
+        /** Timestamp when the rules were last updated */
+        updatedAt?: string | undefined;
+        /** Timestamp when the rules were deleted, if applicable */
+        deletedAt?: string | undefined;
+        /** Identifier of the user who created the rules */
+        createdBy?: string | undefined;
+        /** Identifier of the user who last updated the rules */
+        updatedBy?: string | undefined;
+        /** Identifier of the user who deleted the rules */
+        deletedBy?: string | undefined;
+        /** Type of entity these rules apply to */
+        owner?: Data.Owner | undefined;
+        /** Category of the sender */
+        ownerType?: Data.OwnerType | undefined;
+        /** Country code these rules apply to (ISO 3166-1 alpha-2) */
+        country?: string | undefined;
+        rules?: Data.Rules | undefined;
+    }
+
+    export namespace Data {
+        /** Type of entity these rules apply to */
+        export const Owner = {
+            Sender: "sender",
+        } as const;
+        export type Owner = (typeof Owner)[keyof typeof Owner];
+        /** Category of the sender */
+        export const OwnerType = {
+            Individual: "individual",
+            Business: "business",
+        } as const;
+        export type OwnerType = (typeof OwnerType)[keyof typeof OwnerType];
+
+        export interface Rules {
+            /** List of required fields for sender creation. Identity fields include supportedDocumentTypes. */
+            requiredFields?: Rules.RequiredFields.Item[] | undefined;
+            requiredDocuments?: Rules.RequiredDocuments.Item[] | undefined;
+            /** UBO validation rules (only present for business ownerType) */
+            ubo?: Rules.Ubo | undefined;
+        }
+
+        export namespace Rules {
+            export type RequiredFields = RequiredFields.Item[];
+
+            export namespace RequiredFields {
+                export interface Item {
+                    /** Field name */
+                    field?: string | undefined;
+                    /** Human-readable description of the field */
+                    description?: string | undefined;
+                    /** Nested fields within this field. For identity fields, the documentType nested field includes supportedDocumentTypes. */
+                    nestedFields?: Item.NestedFields.Item[] | undefined;
+                }
+
+                export namespace Item {
+                    export type NestedFields = NestedFields.Item[];
+
+                    export namespace NestedFields {
+                        export interface Item {
+                            /** Nested field name */
+                            field?: string | undefined;
+                            /** Human-readable description */
+                            description?: string | undefined;
+                            /** Available identity document types for the requested country. Only present on the documentType nested field. */
+                            supportedDocumentTypes?: Item.SupportedDocumentTypes.Item[] | undefined;
+                        }
+
+                        export namespace Item {
+                            export type SupportedDocumentTypes = SupportedDocumentTypes.Item[];
+
+                            export namespace SupportedDocumentTypes {
+                                export interface Item {
+                                    /** Document type identifier (e.g., PASSPORT, DRIVER_LICENSE, NATIONAL_ID) */
+                                    type: string;
+                                    /** ID_DOCUMENT requires file uploads, ID_NUMBER requires only a document number */
+                                    category: Item.Category;
+                                    /** Whether a front side document image is required */
+                                    requiresFront: boolean;
+                                    /** Whether a back side document image is required */
+                                    requiresBack: boolean;
+                                }
+
+                                export namespace Item {
+                                    /** ID_DOCUMENT requires file uploads, ID_NUMBER requires only a document number */
+                                    export const Category = {
+                                        IdDocument: "ID_DOCUMENT",
+                                        IdNumber: "ID_NUMBER",
+                                    } as const;
+                                    export type Category = (typeof Category)[keyof typeof Category];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            export type RequiredDocuments = RequiredDocuments.Item[];
+
+            export namespace RequiredDocuments {
+                export interface Item {
+                    /** Type of required document */
+                    type?: Item.Type | undefined;
+                    /** Description of the required document */
+                    description?: string | undefined;
+                }
+
+                export namespace Item {
+                    /** Type of required document */
+                    export const Type = {
+                        BusinessRegistrationProof: "business_registration_proof",
+                        AddressProof: "address_proof",
+                    } as const;
+                    export type Type = (typeof Type)[keyof typeof Type];
+                }
+            }
+
+            /**
+             * UBO validation rules (only present for business ownerType)
+             */
+            export interface Ubo {
+                /** Required fields for UBO. Identity fields include supportedDocumentTypes. */
+                requiredFields?: Ubo.RequiredFields.Item[] | undefined;
+            }
+
+            export namespace Ubo {
+                export type RequiredFields = RequiredFields.Item[];
+
+                export namespace RequiredFields {
+                    export interface Item {
+                        /** Field name */
+                        field?: string | undefined;
+                        /** Human-readable description */
+                        description?: string | undefined;
+                        nestedFields?: Item.NestedFields.Item[] | undefined;
+                    }
+
+                    export namespace Item {
+                        export type NestedFields = NestedFields.Item[];
+
+                        export namespace NestedFields {
+                            export interface Item {
+                                field?: string | undefined;
+                                description?: string | undefined;
+                                /** Available identity document types for the requested country */
+                                supportedDocumentTypes?: Item.SupportedDocumentTypes.Item[] | undefined;
+                            }
+
+                            export namespace Item {
+                                export type SupportedDocumentTypes = SupportedDocumentTypes.Item[];
+
+                                export namespace SupportedDocumentTypes {
+                                    export interface Item {
+                                        /** Document type identifier */
+                                        type: string;
+                                        category: Item.Category;
+                                        requiresFront: boolean;
+                                        requiresBack: boolean;
+                                    }
+
+                                    export namespace Item {
+                                        export const Category = {
+                                            IdDocument: "ID_DOCUMENT",
+                                            IdNumber: "ID_NUMBER",
+                                        } as const;
+                                        export type Category = (typeof Category)[keyof typeof Category];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

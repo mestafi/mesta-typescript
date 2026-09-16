@@ -1,0 +1,313 @@
+
+import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../BaseClient.js";
+import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
+import * as core from "../../../../../../core/index.js";
+import { mergeAdditionalBodyParameters } from "../../../../../../core/requestBody.js";
+import * as environments from "../../../../../../environments.js";
+import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStatusCodeError.js";
+import * as errors from "../../../../../../errors/index.js";
+import * as Mesta from "../../../../../index.js";
+
+export declare namespace SourceWalletAddressesClient {
+    export type Options = BaseClientOptions;
+
+    export interface RequestOptions extends BaseRequestOptions {}
+}
+
+export class SourceWalletAddressesClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<SourceWalletAddressesClient.Options>;
+
+    constructor(options: SourceWalletAddressesClient.Options) {
+        this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    /**
+     * Retrieves all source wallet addresses for a specific sender. Supports pagination, sorting, and search.
+     *
+     * @param {Mesta.senders.ListSourceWalletAddressesRequest} request
+     * @param {SourceWalletAddressesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.sourceWalletAddresses.list({
+     *         id: "id"
+     *     })
+     */
+    public list(
+        request: Mesta.senders.ListSourceWalletAddressesRequest,
+        requestOptions?: SourceWalletAddressesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.senders.ListSourceWalletAddressesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
+    }
+
+    private async __list(
+        request: Mesta.senders.ListSourceWalletAddressesRequest,
+        requestOptions?: SourceWalletAddressesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.senders.ListSourceWalletAddressesResponse>> {
+        const { id, page, pageSize, sortBy, sortOrder, search } = request;
+        const _queryParams: Record<string, unknown> = {
+            page,
+            pageSize,
+            sortBy: sortBy != null ? sortBy : undefined,
+            sortOrder: sortOrder != null ? sortOrder : undefined,
+            search,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(id)}/source-wallet-addresses`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.senders.ListSourceWalletAddressesResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/senders/{id}/source-wallet-addresses",
+        );
+    }
+
+    /**
+     * Creates new source addresses for a specific sender. Multiple addresses can be created in a single request.
+     *
+     * @param {Mesta.senders.CreateSourceWalletAddressesRequest} request
+     * @param {SourceWalletAddressesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.sourceWalletAddresses.create({
+     *         id: "id",
+     *         body: [{
+     *                 address: "address",
+     *                 chain: "chain"
+     *             }]
+     *     })
+     */
+    public create(
+        request: Mesta.senders.CreateSourceWalletAddressesRequest,
+        requestOptions?: SourceWalletAddressesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.senders.CreateSourceWalletAddressesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Mesta.senders.CreateSourceWalletAddressesRequest,
+        requestOptions?: SourceWalletAddressesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.senders.CreateSourceWalletAddressesResponse>> {
+        const { id, body: _body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(id)}/source-wallet-addresses`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.senders.CreateSourceWalletAddressesResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/senders/{id}/source-wallet-addresses",
+        );
+    }
+
+    /**
+     * Deletes a specific source wallet address for a sender.
+     *
+     * @param {Mesta.senders.DeleteSourceWalletAddressesRequest} request
+     * @param {SourceWalletAddressesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.sourceWalletAddresses.delete({
+     *         id: "id",
+     *         sourceWalletAddressId: "sourceWalletAddressId"
+     *     })
+     */
+    public delete(
+        request: Mesta.senders.DeleteSourceWalletAddressesRequest,
+        requestOptions?: SourceWalletAddressesClient.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
+    }
+
+    private async __delete(
+        request: Mesta.senders.DeleteSourceWalletAddressesRequest,
+        requestOptions?: SourceWalletAddressesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<void>> {
+        const { id, sourceWalletAddressId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(id)}/source-wallet-addresses/${core.url.encodePathParam(sourceWalletAddressId)}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: undefined, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/v1/senders/{id}/source-wallet-addresses/{sourceWalletAddressId}",
+        );
+    }
+}

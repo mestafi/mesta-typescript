@@ -1,0 +1,54 @@
+
+export interface CreateTransfersResponse {
+    data?: CreateTransfersResponse.Data | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace CreateTransfersResponse {
+    export interface Data {
+        /** Unique identifier for the internal transfer (order id) */
+        id?: string | undefined;
+        /** Identifier of the source sender */
+        senderId?: string | undefined;
+        /** Identifier of the recipient sender */
+        beneficiarySenderId?: string | undefined;
+        /** Identifier of the merchant */
+        merchantId?: string | undefined;
+        /** Always `internal` for internal transfers */
+        transferType?: Data.TransferType | undefined;
+        /** Source currency code */
+        sourceCurrency?: string | undefined;
+        /** Target currency code */
+        targetCurrency?: string | undefined;
+        /** Amount debited from the source sender in source currency (including fees) */
+        acceptedGrossSourceAmount?: string | undefined;
+        /** Amount credited to the recipient sender in target currency */
+        targetAmount?: string | undefined;
+        /** Identifier of the accepted internal quote */
+        acceptedQuoteId?: string | undefined;
+        /** Current status of the internal transfer. `created` on creation, `funds_received` once the source sender is debited, `success` once the recipient sender is credited. */
+        status?: Data.Status | undefined;
+        /** Timestamp when the transfer was created */
+        createdAt?: string | undefined;
+        /** Timestamp when the transfer was last updated */
+        updatedAt?: string | undefined;
+    }
+
+    export namespace Data {
+        /** Always `internal` for internal transfers */
+        export const TransferType = {
+            Internal: "internal",
+        } as const;
+        export type TransferType = (typeof TransferType)[keyof typeof TransferType];
+        /** Current status of the internal transfer. `created` on creation, `funds_received` once the source sender is debited, `success` once the recipient sender is credited. */
+        export const Status = {
+            Created: "created",
+            FundsReceived: "funds_received",
+            InProgress: "in_progress",
+            Success: "success",
+            Failed: "failed",
+        } as const;
+        export type Status = (typeof Status)[keyof typeof Status];
+    }
+}

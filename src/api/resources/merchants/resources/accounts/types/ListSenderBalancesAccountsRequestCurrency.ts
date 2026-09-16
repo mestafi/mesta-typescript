@@ -1,0 +1,16 @@
+
+export const ListSenderBalancesAccountsRequestCurrency = {
+    Usd: "USD",
+    Eur: "EUR",
+    Gbp: "GBP",
+    Mxn: "MXN",
+    UsdcEth: "USDC_ETH",
+    UsdcPol: "USDC_POL",
+    UsdcSol: "USDC_SOL",
+    UsdtEth: "USDT_ETH",
+    UsdtPol: "USDT_POL",
+    UsdtSol: "USDT_SOL",
+    UsdtTrx: "USDT_TRX",
+} as const;
+export type ListSenderBalancesAccountsRequestCurrency =
+    (typeof ListSenderBalancesAccountsRequestCurrency)[keyof typeof ListSenderBalancesAccountsRequestCurrency];

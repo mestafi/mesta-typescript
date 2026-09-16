@@ -1,0 +1,19 @@
+
+export interface ListEventsOrdersResponse {
+    data?: ListEventsOrdersResponse.Data.Item[] | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace ListEventsOrdersResponse {
+    export type Data = Data.Item[];
+
+    export namespace Data {
+        export interface Item {
+            /** User-friendly display name of the order event */
+            state?: string | undefined;
+            /** Timestamp when the event occurred */
+            time?: string | undefined;
+        }
+    }
+}

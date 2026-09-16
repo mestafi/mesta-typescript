@@ -1,0 +1,112 @@
+
+import * as Mesta from "../../src/api/index";
+import { MestaClient } from "../../src/Client";
+import { mockServerPool } from "../mock-server/MockServerPool";
+
+describe("ValidationRulesClient", () => {
+    test("listStates (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: { country: "US", states: [{ code: "US-CA", name: "California" }] },
+            requestId: 1,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/states")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.listStates({
+            country: "US",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("listStates (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/states")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.listStates({
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("listStates (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/states")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.listStates({
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("listStates (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/states")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.listStates({
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+});

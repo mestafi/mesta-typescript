@@ -1,0 +1,747 @@
+
+import type { BaseClientOptions, BaseRequestOptions } from "../../../../BaseClient.js";
+import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as core from "../../../../core/index.js";
+import { mergeAdditionalBodyParameters } from "../../../../core/requestBody.js";
+import * as environments from "../../../../environments.js";
+import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
+import * as errors from "../../../../errors/index.js";
+import * as Mesta from "../../../index.js";
+import { DocumentsClient } from "../resources/documents/client/Client.js";
+
+export declare namespace BeneficiariesClient {
+    export type Options = BaseClientOptions;
+
+    export interface RequestOptions extends BaseRequestOptions {}
+}
+
+export class BeneficiariesClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<BeneficiariesClient.Options>;
+    protected _documents: DocumentsClient | undefined;
+
+    constructor(options: BeneficiariesClient.Options) {
+        this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    public get documents(): DocumentsClient {
+        return (this._documents ??= new DocumentsClient(this._options));
+    }
+
+    /**
+     * Deletes a beneficiary account.
+     *
+     * @param {Mesta.DeleteBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.delete({
+     *         beneficiaryId: "beneficiaryId"
+     *     })
+     */
+    public delete(
+        request: Mesta.DeleteBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.DeleteBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
+    }
+
+    private async __delete(
+        request: Mesta.DeleteBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.DeleteBeneficiariesResponse>> {
+        const { beneficiaryId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/beneficiaries/${core.url.encodePathParam(beneficiaryId)}`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.DeleteBeneficiariesResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/v1/beneficiaries/{beneficiaryId}",
+        );
+    }
+
+    /**
+     * Settles a pending beneficiary verification with a simulated provider decision so you can drive onboarding end to end without waiting on the identity provider. Available in test environments only — disabled in production.
+     *
+     * Verification must already have been started via the corresponding `/verify` call; otherwise the request is rejected with `MOCK_VERIFICATION_NOT_INITIATED`.
+     *
+     * @param {Mesta.SimulateVerificationResultBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.simulateVerificationResult({
+     *         beneficiaryId: "beneficiaryId",
+     *         result: "APPROVED"
+     *     })
+     */
+    public simulateVerificationResult(
+        request: Mesta.SimulateVerificationResultBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.SimulateVerificationResultBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__simulateVerificationResult(request, requestOptions));
+    }
+
+    private async __simulateVerificationResult(
+        request: Mesta.SimulateVerificationResultBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.SimulateVerificationResultBeneficiariesResponse>> {
+        const { beneficiaryId, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/beneficiaries/${core.url.encodePathParam(beneficiaryId)}/mock-verification-result`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.SimulateVerificationResultBeneficiariesResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/beneficiaries/{beneficiaryId}/mock-verification-result",
+        );
+    }
+
+    /**
+     * Verifies a specific beneficiary account by initiating sanction/watchlist screenings.
+     *
+     * @param {Mesta.VerifyBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.verify({
+     *         beneficiaryId: "beneficiaryId"
+     *     })
+     */
+    public verify(
+        request: Mesta.VerifyBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.VerifyBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__verify(request, requestOptions));
+    }
+
+    private async __verify(
+        request: Mesta.VerifyBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.VerifyBeneficiariesResponse>> {
+        const { beneficiaryId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/beneficiaries/${core.url.encodePathParam(beneficiaryId)}/verify`,
+            ),
+            method: "POST",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.VerifyBeneficiariesResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/beneficiaries/{beneficiaryId}/verify",
+        );
+    }
+
+    /**
+     * Retrieve a list of bank Ids for a specific country.
+     *
+     * @param {Mesta.LookupBankBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.lookupBank({
+     *         countryCode: "countryCode"
+     *     })
+     */
+    public lookupBank(
+        request: Mesta.LookupBankBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.LookupBankBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__lookupBank(request, requestOptions));
+    }
+
+    private async __lookupBank(
+        request: Mesta.LookupBankBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.LookupBankBeneficiariesResponse>> {
+        const { countryCode } = request;
+        const _queryParams: Record<string, unknown> = {
+            countryCode,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                "v1/beneficiaries/banks",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.LookupBankBeneficiariesResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v1/beneficiaries/banks");
+    }
+
+    /**
+     * Retrieves a paginated list of beneficiaries using the V2 API. Unlike v1, the v2 API separates payment methods from beneficiary data. Payment methods are available on the detail endpoint.
+     *
+     * @param {Mesta.ListBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.list()
+     */
+    public list(
+        request: Mesta.ListBeneficiariesRequest = {},
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.ListBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__list(request, requestOptions));
+    }
+
+    private async __list(
+        request: Mesta.ListBeneficiariesRequest = {},
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.ListBeneficiariesResponse>> {
+        const { page, pageSize, sortBy, sortOrder } = request;
+        const _queryParams: Record<string, unknown> = {
+            page,
+            pageSize,
+            sortBy: sortBy != null ? sortBy : undefined,
+            sortOrder: sortOrder != null ? sortOrder : undefined,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                "v2/beneficiaries",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.ListBeneficiariesResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/beneficiaries");
+    }
+
+    /**
+     * Retrieve a single beneficiary by ID with their associated payment methods.
+     *
+     * @param {Mesta.GetBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.get({
+     *         id: "id"
+     *     })
+     */
+    public get(
+        request: Mesta.GetBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.GetBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Mesta.GetBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.GetBeneficiariesResponse>> {
+        const { id } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v2/beneficiaries/${core.url.encodePathParam(id)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.GetBeneficiariesResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v2/beneficiaries/{id}");
+    }
+
+    /**
+     * Partially update a beneficiary. Only the provided fields will be updated.
+     *
+     * @param {Mesta.UpdateBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.update({
+     *         id: "id"
+     *     })
+     */
+    public update(
+        request: Mesta.UpdateBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.UpdateBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
+    }
+
+    private async __update(
+        request: Mesta.UpdateBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.UpdateBeneficiariesResponse>> {
+        const { id, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v2/beneficiaries/${core.url.encodePathParam(id)}`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.UpdateBeneficiariesResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "PATCH", "/v2/beneficiaries/{id}");
+    }
+
+    /**
+     * Create a new beneficiary with mandatory compliance fields. Same as V2 but `beneficiaryRelationship` and `purposeOfPayment` are required.
+     *
+     * @param {Mesta.CreateBeneficiariesRequest} request
+     * @param {BeneficiariesClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.beneficiaries.create({
+     *         type: "individual",
+     *         address: {
+     *             street: "123 Main St",
+     *             city: "Manila",
+     *             postalCode: "1000",
+     *             country: "PH"
+     *         },
+     *         paymentMethods: [{
+     *                 type: "bank_account",
+     *                 data: {
+     *                     "key": "value"
+     *                 }
+     *             }],
+     *         beneficiaryRelationship: "business_partner",
+     *         purposeOfPayment: "payroll"
+     *     })
+     */
+    public create(
+        request: Mesta.CreateBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.CreateBeneficiariesResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Mesta.CreateBeneficiariesRequest,
+        requestOptions?: BeneficiariesClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.CreateBeneficiariesResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                "v3/beneficiaries",
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.CreateBeneficiariesResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v3/beneficiaries");
+    }
+}

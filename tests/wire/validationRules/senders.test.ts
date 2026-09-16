@@ -1,0 +1,963 @@
+
+import * as Mesta from "../../../src/api/index";
+import { MestaClient } from "../../../src/Client";
+import { mockServerPool } from "../../mock-server/MockServerPool";
+
+describe("SendersClient", () => {
+    test("getV1 (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "id",
+                version: 1,
+                createdAt: "2024-01-15T09:30:00Z",
+                updatedAt: "2024-01-15T09:30:00Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "createdBy",
+                updatedBy: "updatedBy",
+                deletedBy: "deletedBy",
+                owner: "sender",
+                ownerType: "individual",
+                country: "country",
+                rules: { requiredFields: [{ field: "field", description: "description" }], requiredDocuments: [{}] },
+            },
+            requestId: 1,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.getV1({
+            ownerType: "individual",
+            country: "country",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("getV1 (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("getV1 (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("getV1 (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("getV1 (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("getUboRulesV1 (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "575a92af-8a6a-4b8e-9dc6-30b01e99ceaa",
+                version: 6,
+                createdAt: "2024-10-25T15:40:49Z",
+                updatedAt: "2024-11-14T10:51:37Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                updatedBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                deletedBy: "deletedBy",
+                owner: "sender",
+                ownerType: "business",
+                country: "CO",
+            },
+            requestId: 20735,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.getUboRulesV1({
+            ownerType: "individual",
+            country: "country",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("getUboRulesV1 (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("getUboRulesV1 (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("getUboRulesV1 (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("getUboRulesV1 (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("listDocumentTypesV1 (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "575a92af-8a6a-4b8e-9dc6-30b01e99ceaa",
+                version: 6,
+                createdAt: "2024-10-25T15:40:49Z",
+                updatedAt: "2024-11-14T10:51:37Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                updatedBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                deletedBy: "deletedBy",
+                owner: "sender",
+                ownerType: "individual",
+                country: "CO",
+                rules: { requiredDocuments: [{ type: "business_registration_proof", description: "description" }] },
+            },
+            requestId: 20193,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.listDocumentTypesV1({
+            ownerType: "individual",
+            country: "country",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("listDocumentTypesV1 (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("listDocumentTypesV1 (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("listDocumentTypesV1 (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("listDocumentTypesV1 (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV1({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("getV2 (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "id",
+                version: 1,
+                createdAt: "2024-01-15T09:30:00Z",
+                updatedAt: "2024-01-15T09:30:00Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "createdBy",
+                updatedBy: "updatedBy",
+                deletedBy: "deletedBy",
+                owner: "sender",
+                ownerType: "individual",
+                country: "country",
+                rules: {
+                    requiredFields: [
+                        {
+                            nestedFields: [
+                                {
+                                    supportedDocumentTypes: [
+                                        {
+                                            type: "DRIVER_LICENSE",
+                                            category: "ID_DOCUMENT",
+                                            requiresFront: true,
+                                            requiresBack: true,
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                    requiredDocuments: [{}],
+                },
+            },
+            requestId: 1,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.getV2({
+            ownerType: "individual",
+            country: "country",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("getV2 (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV2({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("getV2 (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV2({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("getV2 (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getV2({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("getUboRulesV2 (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "575a92af-8a6a-4b8e-9dc6-30b01e99ceaa",
+                version: 6,
+                createdAt: "2024-10-25T15:40:49Z",
+                updatedAt: "2024-11-14T10:51:37Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                updatedBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                deletedBy: "deletedBy",
+                owner: "sender",
+                ownerType: "business",
+                country: "CO",
+            },
+            requestId: 20735,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.getUboRulesV2({
+            ownerType: "business",
+            country: "country",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("getUboRulesV2 (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV2({
+                ownerType: "business",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("getUboRulesV2 (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV2({
+                ownerType: "business",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("getUboRulesV2 (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV2({
+                ownerType: "business",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("getUboRulesV2 (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/ubo")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.getUboRulesV2({
+                ownerType: "business",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("listDocumentTypesV2 (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "575a92af-8a6a-4b8e-9dc6-30b01e99ceaa",
+                version: 6,
+                createdAt: "2024-10-25T15:40:49Z",
+                updatedAt: "2024-11-14T10:51:37Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                updatedBy: "05663808-dbf0-4ae5-9378-c9d1ad7d9432",
+                deletedBy: "deletedBy",
+                owner: "sender",
+                ownerType: "business",
+                country: "CO",
+                rules: { requiredDocuments: [{ type: "business_registration_proof", description: "description" }] },
+            },
+            requestId: 20193,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.listDocumentTypesV2({
+            ownerType: "individual",
+            country: "country",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("listDocumentTypesV2 (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV2({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("listDocumentTypesV2 (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV2({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("listDocumentTypesV2 (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v2/validation-rules/senders/document-types")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listDocumentTypesV2({
+                ownerType: "individual",
+                country: "country",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("listCountries (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { data: ["US"], requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/countries")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.validationRules.senders.listCountries();
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("listCountries (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/countries")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listCountries();
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("listCountries (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/countries")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listCountries();
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("listCountries (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/validation-rules/senders/countries")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.validationRules.senders.listCountries();
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+});

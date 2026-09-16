@@ -1,0 +1,7 @@
+
+export const GetV1SendersRequestOwnerType = {
+    Individual: "individual",
+    Business: "business",
+} as const;
+export type GetV1SendersRequestOwnerType =
+    (typeof GetV1SendersRequestOwnerType)[keyof typeof GetV1SendersRequestOwnerType];

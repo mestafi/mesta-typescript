@@ -1,0 +1,45 @@
+
+import type * as Mesta from "../index.js";
+
+/**
+ * Bank account payment method data
+ */
+export interface BankAccountInfo {
+    /** Bank account number */
+    accountNumber: string;
+    accountType?: Mesta.BankAccountType | undefined;
+    /** IFSC code (India) */
+    ifscCode?: string | undefined;
+    /** BIC/SWIFT code (Europe) */
+    bic?: string | undefined;
+    /** Sort code (UK) */
+    sortCode?: string | undefined;
+    /** Routing number (US, CA) */
+    routingNumber?: string | undefined;
+    /** Branch code (CA, JP) */
+    branchCode?: string | undefined;
+    /** BSB number (AU) */
+    bsbNumber?: string | undefined;
+    /** Remittance purpose (AU, AE) */
+    remittancePurpose?: string | undefined;
+    /** Transfer type */
+    transferType?: string | undefined;
+    /** Name of the bank */
+    bankName?: string | undefined;
+    /** Bank address */
+    bankAddress?: string | undefined;
+    /** Bank city */
+    bankCity?: string | undefined;
+    /** Bank postal code */
+    bankPostCode?: string | undefined;
+    /** Bank state */
+    bankState?: string | undefined;
+    /** Bank document number (used for hand-off payments) */
+    bankDocumentNumber?: string | undefined;
+    /** Bank identifier number */
+    bankId?: string | undefined;
+    /** Two-letter country code of the bank account (ISO 3166-1 alpha-2) */
+    bankAccountCountry?: string | undefined;
+    /** Country code of the bank. May be returned alongside bankAccountCountry. */
+    bankCountry?: string | undefined;
+}

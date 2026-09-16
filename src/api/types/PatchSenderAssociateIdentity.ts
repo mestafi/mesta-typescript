@@ -1,0 +1,14 @@
+
+/**
+ * Identity fields to update. Omitted fields retain their existing values.
+ */
+export interface PatchSenderAssociateIdentity {
+    countryCode?: string | undefined;
+    /** Supported values and front/back requirements depend on the identity country. */
+    documentType?: string | undefined;
+    documentNumber?: string | undefined;
+    /** Base64 encoded front image of the identity document. */
+    documentFront?: string | undefined;
+    /** Base64 encoded back image of the identity document. */
+    documentBack?: string | undefined;
+}

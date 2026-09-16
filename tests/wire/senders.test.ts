@@ -1,0 +1,1913 @@
+
+import * as Mesta from "../../src/api/index";
+import { MestaClient } from "../../src/Client";
+import { mockServerPool } from "../mock-server/MockServerPool";
+
+describe("SendersClient", () => {
+    test("list (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: [
+                {
+                    id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                    version: 9,
+                    createdAt: "2024-07-31T21:48:26Z",
+                    updatedAt: "2024-08-01T16:21:56Z",
+                    fullName: "Sample Business Name",
+                    firstName: "firstName",
+                    lastName: "lastName",
+                    birthDate: "2023-01-15",
+                    email: "business@example.com",
+                    phone: "+12025550123",
+                    addresses: [
+                        {
+                            street: "123 Business Ave",
+                            city: "San Francisco",
+                            state: "CA",
+                            country: "US",
+                            postalCode: "94101",
+                        },
+                    ],
+                    merchantId: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                    kyb: { statusUpdatedAt: "2024-07-31T21:52:39Z" },
+                    status: "active",
+                    websiteUrl: "https://www.example.com",
+                    identificationNumber: "XXXXXX1234",
+                    documents: [
+                        {
+                            id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                            url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                            fileName: "address_proof.pdf",
+                            submittedAt: "2024-07-31T21:52:26Z",
+                        },
+                    ],
+                    metadata: { key: "value" },
+                    type: "business",
+                    identity: { countryCode: "US", documentNumber: "XXXXX1234" },
+                    registrationDate: "2024-01-15T09:30:00Z",
+                    businessType: "sole_proprietorship",
+                    middleName: "middleName",
+                    gender: "male",
+                    occupation: "occupation",
+                },
+            ],
+            total: 2,
+            hasNext: false,
+            requestId: 18314,
+        };
+
+        server.mockEndpoint().get("/v1/senders").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.senders.list();
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("list (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server.mockEndpoint().get("/v1/senders").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.senders.list();
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("list (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server.mockEndpoint().get("/v1/senders").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.senders.list();
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("list (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server.mockEndpoint().get("/v1/senders").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.senders.list();
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("list (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server.mockEndpoint().get("/v1/senders").respondWith().statusCode(500).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.senders.list();
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("create (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll"],
+            sourceOfFunds: "advance_from_director",
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [{ street: "street", city: "city", postalCode: "12345 or 00000", country: "country" }],
+            identity: { documentType: "PASSPORT", countryCode: "countryCode", documentNumber: "documentNumber" },
+            gender: "male",
+            occupation: "accountant",
+        };
+        const rawResponseBody = {
+            data: {
+                id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                version: 1,
+                createdAt: "2024-11-17T00:32:58Z",
+                updatedAt: "2024-11-17T00:32:58Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                updatedBy: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                deletedBy: "deletedBy",
+                fullName: "Sample Business Name",
+                firstName: "firstName",
+                middleName: "middleName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "business@example.com",
+                phone: "+12025550123",
+                gender: "male",
+                occupation: "occupation",
+                addresses: [
+                    {
+                        street: "123 Business Ave",
+                        city: "San Francisco",
+                        state: "CA",
+                        country: "US",
+                        postalCode: "94101",
+                    },
+                ],
+                merchantId: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                kyb: { status: "unverified", statusUpdatedAt: "2024-11-17T00:32:58Z" },
+                kyc: { key: "value" },
+                status: "active",
+                websiteUrl: "websiteUrl",
+                identificationNumber: "XXXXXX1234",
+                acceptedCapabilities: ["eur_account"],
+                unavailableCapabilities: ["usd_account"],
+                onboardingInfo: {
+                    isFinancialInstitution: true,
+                    websiteAbsenceReason: "websiteAbsenceReason",
+                    expectedMonthlyVolumeEstimate: 1.1,
+                    averageTransactionSize: 1.1,
+                    primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions"],
+                    natureOfPayments: ["payroll"],
+                    numberOfEmployees: "1",
+                    sourceOfFunds: "advance_from_director",
+                },
+                documents: [
+                    {
+                        id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                        url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                        fileName: "address_proof.pdf",
+                        submittedAt: "2024-11-17T00:32:58Z",
+                    },
+                ],
+                metadata: { key: "value" },
+                riskScore: "unknown",
+                type: "business",
+                identity: { documentType: "PASSPORT", countryCode: "US", documentNumber: "XXXXX1234" },
+                registrationDate: "2024-01-15T09:30:00Z",
+                businessType: "sole_proprietorship",
+                ubo: { key: "value" },
+                senderAssociate: [{ id: "id", senderId: "senderId", roles: ["director"] }],
+                depositWalletAddresses: ["depositWalletAddresses"],
+                tos: {
+                    status: "pending",
+                    acceptedAt: "2024-01-15T09:30:00Z",
+                    version: "version",
+                    agreementId: "agreementId",
+                },
+            },
+            requestId: 18478,
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v2/senders")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.create({
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll"],
+            sourceOfFunds: "advance_from_director",
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [
+                {
+                    street: "street",
+                    city: "city",
+                    postalCode: "12345 or 00000",
+                    country: "country",
+                },
+            ],
+            identity: {
+                documentType: "PASSPORT",
+                countryCode: "countryCode",
+                documentNumber: "documentNumber",
+            },
+            gender: "male",
+            occupation: "accountant",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("create (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+            ],
+            identity: { documentType: "PASSPORT", countryCode: "countryCode", documentNumber: "documentNumber" },
+            gender: "male",
+            occupation: "accountant",
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions", "primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll", "payroll"],
+            sourceOfFunds: "advance_from_director",
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v2/senders")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.create({
+                type: "individual",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "email",
+                phone: "phone",
+                addresses: [
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                ],
+                identity: {
+                    documentType: "PASSPORT",
+                    countryCode: "countryCode",
+                    documentNumber: "documentNumber",
+                },
+                gender: "male",
+                occupation: "accountant",
+                expectedMonthlyVolumeEstimate: 1.1,
+                averageTransactionSize: 1.1,
+                primaryCounterpartyJurisdictions: [
+                    "primaryCounterpartyJurisdictions",
+                    "primaryCounterpartyJurisdictions",
+                ],
+                natureOfPayments: ["payroll", "payroll"],
+                sourceOfFunds: "advance_from_director",
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("create (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+            ],
+            identity: { documentType: "PASSPORT", countryCode: "countryCode", documentNumber: "documentNumber" },
+            gender: "male",
+            occupation: "accountant",
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions", "primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll", "payroll"],
+            sourceOfFunds: "advance_from_director",
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v2/senders")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.create({
+                type: "individual",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "email",
+                phone: "phone",
+                addresses: [
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                ],
+                identity: {
+                    documentType: "PASSPORT",
+                    countryCode: "countryCode",
+                    documentNumber: "documentNumber",
+                },
+                gender: "male",
+                occupation: "accountant",
+                expectedMonthlyVolumeEstimate: 1.1,
+                averageTransactionSize: 1.1,
+                primaryCounterpartyJurisdictions: [
+                    "primaryCounterpartyJurisdictions",
+                    "primaryCounterpartyJurisdictions",
+                ],
+                natureOfPayments: ["payroll", "payroll"],
+                sourceOfFunds: "advance_from_director",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("create (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+            ],
+            identity: { documentType: "PASSPORT", countryCode: "countryCode", documentNumber: "documentNumber" },
+            gender: "male",
+            occupation: "accountant",
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions", "primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll", "payroll"],
+            sourceOfFunds: "advance_from_director",
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v2/senders")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.create({
+                type: "individual",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "email",
+                phone: "phone",
+                addresses: [
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                ],
+                identity: {
+                    documentType: "PASSPORT",
+                    countryCode: "countryCode",
+                    documentNumber: "documentNumber",
+                },
+                gender: "male",
+                occupation: "accountant",
+                expectedMonthlyVolumeEstimate: 1.1,
+                averageTransactionSize: 1.1,
+                primaryCounterpartyJurisdictions: [
+                    "primaryCounterpartyJurisdictions",
+                    "primaryCounterpartyJurisdictions",
+                ],
+                natureOfPayments: ["payroll", "payroll"],
+                sourceOfFunds: "advance_from_director",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("create (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+            ],
+            identity: { documentType: "PASSPORT", countryCode: "countryCode", documentNumber: "documentNumber" },
+            gender: "male",
+            occupation: "accountant",
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions", "primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll", "payroll"],
+            sourceOfFunds: "advance_from_director",
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v2/senders")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.create({
+                type: "individual",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "email",
+                phone: "phone",
+                addresses: [
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                ],
+                identity: {
+                    documentType: "PASSPORT",
+                    countryCode: "countryCode",
+                    documentNumber: "documentNumber",
+                },
+                gender: "male",
+                occupation: "accountant",
+                expectedMonthlyVolumeEstimate: 1.1,
+                averageTransactionSize: 1.1,
+                primaryCounterpartyJurisdictions: [
+                    "primaryCounterpartyJurisdictions",
+                    "primaryCounterpartyJurisdictions",
+                ],
+                natureOfPayments: ["payroll", "payroll"],
+                sourceOfFunds: "advance_from_director",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("create (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            type: "individual",
+            firstName: "firstName",
+            lastName: "lastName",
+            birthDate: "2023-01-15",
+            email: "email",
+            phone: "phone",
+            addresses: [
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+                { street: "street", city: "city", postalCode: "postalCode", country: "country" },
+            ],
+            identity: { documentType: "PASSPORT", countryCode: "countryCode", documentNumber: "documentNumber" },
+            gender: "male",
+            occupation: "accountant",
+            expectedMonthlyVolumeEstimate: 1.1,
+            averageTransactionSize: 1.1,
+            primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions", "primaryCounterpartyJurisdictions"],
+            natureOfPayments: ["payroll", "payroll"],
+            sourceOfFunds: "advance_from_director",
+        };
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/v2/senders")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.create({
+                type: "individual",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "email",
+                phone: "phone",
+                addresses: [
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                    {
+                        street: "street",
+                        city: "city",
+                        postalCode: "postalCode",
+                        country: "country",
+                    },
+                ],
+                identity: {
+                    documentType: "PASSPORT",
+                    countryCode: "countryCode",
+                    documentNumber: "documentNumber",
+                },
+                gender: "male",
+                occupation: "accountant",
+                expectedMonthlyVolumeEstimate: 1.1,
+                averageTransactionSize: 1.1,
+                primaryCounterpartyJurisdictions: [
+                    "primaryCounterpartyJurisdictions",
+                    "primaryCounterpartyJurisdictions",
+                ],
+                natureOfPayments: ["payroll", "payroll"],
+                sourceOfFunds: "advance_from_director",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                version: 9,
+                createdAt: "2024-07-31T21:48:26Z",
+                updatedAt: "2024-08-01T16:21:56Z",
+                fullName: "Sample Business Name",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "contact@example.com",
+                phone: "+12025550123",
+                addresses: [
+                    { street: "123 Main St", city: "San Francisco", state: "CA", country: "US", postalCode: "94101" },
+                ],
+                merchantId: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                kyb: { status: "unverified", statusUpdatedAt: "2024-07-31T21:52:39Z" },
+                kyc: { status: "unverified", statusUpdatedAt: "2024-01-15T09:30:00Z" },
+                status: "active",
+                websiteUrl: "websiteUrl",
+                identificationNumber: "XXXXX1234",
+                onboardingInfo: {
+                    isFinancialInstitution: true,
+                    websiteAbsenceReason: "websiteAbsenceReason",
+                    expectedMonthlyVolumeEstimate: 1.1,
+                    averageTransactionSize: 1.1,
+                    primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions"],
+                    natureOfPayments: ["payroll"],
+                    numberOfEmployees: "1",
+                    sourceOfFunds: "advance_from_director",
+                },
+                documents: [
+                    {
+                        id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                        url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                        fileName: "address_proof.pdf",
+                        submittedAt: "2024-07-31T21:52:26Z",
+                    },
+                ],
+                metadata: { key: "value" },
+                type: "business",
+                identity: {
+                    countryCode: "US",
+                    documentType: "PASSPORT",
+                    documentNumber: "XXXXX1234",
+                    issueDate: "2023-01-15",
+                    expiryDate: "2023-01-15",
+                    documentFront: {
+                        url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                        fileName: "passport_front.jpg",
+                        fileType: "PASSPORT",
+                    },
+                    documentBack: {
+                        url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                        fileName: "passport_back.jpg",
+                        fileType: "PASSPORT",
+                    },
+                },
+                registrationDate: "2024-01-15T09:30:00Z",
+                businessType: "sole_proprietorship",
+                ubo: [
+                    {
+                        id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                        version: 4,
+                        createdAt: "2024-07-31T21:51:58Z",
+                        updatedAt: "2024-07-31T21:52:39Z",
+                        firstName: "John",
+                        lastName: "Doe",
+                        birthDate: "1990-01-01",
+                        email: "contact@example.com",
+                        phone: "+12025550123",
+                        ownershipPercent: 25,
+                        address: {
+                            street: "123 Main St",
+                            city: "San Francisco",
+                            state: "CA",
+                            country: "US",
+                            postalCode: "94101",
+                        },
+                        identity: {
+                            countryCode: "US",
+                            documentFront: {
+                                url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                                fileName: "passport_front.jpg",
+                                fileType: "PASSPORT",
+                            },
+                            documentBack: {
+                                url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                                fileName: "passport_back.jpg",
+                                fileType: "PASSPORT",
+                            },
+                            documentNumber: "123456789",
+                        },
+                        senderId: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                        kyc: { statusUpdatedAt: "2024-07-31T21:52:39Z" },
+                        pepDeclaration: false,
+                    },
+                ],
+                senderAssociate: [{ id: "id", senderId: "senderId", roles: ["director"] }],
+                depositWalletAddresses: [{}],
+                middleName: "middleName",
+                gender: "male",
+                occupation: "occupation",
+                tos: {
+                    status: "pending",
+                    acceptedAt: "2024-01-15T09:30:00Z",
+                    version: "version",
+                    agreementId: "agreementId",
+                },
+                depositBankAccounts: [{}],
+            },
+            requestId: 19082,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.get({
+            senderId: "senderId",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.get({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("get (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.get({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("get (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.get({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("get (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.get({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("delete (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { requestId: 19052 };
+
+        server
+            .mockEndpoint()
+            .delete("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.delete({
+            senderId: "senderId",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("delete (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.delete({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("delete (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.delete({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("delete (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .delete("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.delete({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("delete (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .delete("/v1/senders/senderId")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.delete({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("update (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = {
+            data: {
+                id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                version: 1,
+                createdAt: "2024-11-17T00:32:58Z",
+                updatedAt: "2024-11-17T00:32:58Z",
+                deletedAt: "2024-01-15T09:30:00Z",
+                createdBy: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                updatedBy: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                deletedBy: "deletedBy",
+                fullName: "Sample Business Name",
+                firstName: "firstName",
+                lastName: "lastName",
+                birthDate: "2023-01-15",
+                email: "business@example.com",
+                phone: "+12025550123",
+                addresses: [
+                    {
+                        street: "123 Business Ave",
+                        city: "San Francisco",
+                        state: "CA",
+                        country: "US",
+                        postalCode: "94101",
+                    },
+                ],
+                merchantId: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                kyb: { status: "unverified", statusUpdatedAt: "2024-11-17T00:32:58Z" },
+                kyc: { key: "value" },
+                status: "active",
+                websiteUrl: "websiteUrl",
+                identificationNumber: "XXXXXX1234",
+                onboardingInfo: {
+                    isFinancialInstitution: true,
+                    websiteAbsenceReason: "websiteAbsenceReason",
+                    expectedMonthlyVolumeEstimate: 1.1,
+                    averageTransactionSize: 1.1,
+                    primaryCounterpartyJurisdictions: ["primaryCounterpartyJurisdictions"],
+                    natureOfPayments: ["payroll"],
+                    numberOfEmployees: "1",
+                    sourceOfFunds: "advance_from_director",
+                },
+                documents: [
+                    {
+                        id: "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx",
+                        url: "https://example-storage.com/documents/xxxx-xxxx-xxxx",
+                        fileName: "address_proof.pdf",
+                        submittedAt: "2024-11-17T00:32:58Z",
+                    },
+                ],
+                metadata: { key: "value" },
+                riskScore: "unknown",
+                type: "business",
+                identity: {
+                    documentType: "PASSPORT",
+                    countryCode: "US",
+                    documentNumber: "XXXXX1234",
+                    issueDate: "2023-01-15",
+                    expiryDate: "2023-01-15",
+                    documentFront: "base64EncodedImageString...",
+                    documentBack: "base64EncodedImageString...",
+                },
+                registrationDate: "1990-01-01",
+                businessType: "sole_proprietorship",
+                ubo: { key: "value" },
+                senderAssociate: [{ id: "id", senderId: "senderId", roles: ["director"] }],
+                depositWalletAddresses: ["depositWalletAddresses"],
+                middleName: "middleName",
+                gender: "male",
+                occupation: "occupation",
+                tos: {
+                    status: "pending",
+                    acceptedAt: "2024-01-15T09:30:00Z",
+                    version: "version",
+                    agreementId: "agreementId",
+                },
+            },
+            requestId: 18478,
+        };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/senders/senderId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.update({
+            senderId: "senderId",
+            body: {},
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("update (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/senders/senderId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.update({
+                senderId: "senderId",
+                body: {},
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/senders/senderId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.update({
+                senderId: "senderId",
+                body: {},
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("update (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/senders/senderId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.update({
+                senderId: "senderId",
+                body: {},
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("update (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/senders/senderId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.update({
+                senderId: "senderId",
+                body: {},
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("update (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .patch("/v1/senders/senderId")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.update({
+                senderId: "senderId",
+                body: {},
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("simulateVerificationResult (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { result: "APPROVED" };
+        const rawResponseBody = { requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/mock-verification-result")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.simulateVerificationResult({
+            senderId: "senderId",
+            result: "APPROVED",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("simulateVerificationResult (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { result: "APPROVED" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/mock-verification-result")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateVerificationResult({
+                senderId: "senderId",
+                result: "APPROVED",
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("simulateVerificationResult (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { result: "APPROVED" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/mock-verification-result")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateVerificationResult({
+                senderId: "senderId",
+                result: "APPROVED",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("simulateVerificationResult (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { result: "APPROVED" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/mock-verification-result")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateVerificationResult({
+                senderId: "senderId",
+                result: "APPROVED",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("simulateVerificationResult (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { result: "APPROVED" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/mock-verification-result")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateVerificationResult({
+                senderId: "senderId",
+                result: "APPROVED",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("verify (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/verify")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.verify({
+            senderId: "senderId",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("verify (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/verify")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.verify({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("verify (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/verify")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.verify({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("verify (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/verify")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.verify({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("verify (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/verify")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.verify({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("verify (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/verify")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.verify({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("getBalances (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { data: [{ currency: "USD", balance: "1500.50" }], requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId/balances")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.getBalances({
+            senderId: "senderId",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("getBalances (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId/balances")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.getBalances({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("getBalances (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId/balances")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.getBalances({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("getBalances (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId/balances")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.getBalances({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("getBalances (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/senders/senderId/balances")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.getBalances({
+                senderId: "senderId",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+
+    test("simulateDeposit (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { requestId: 177021679 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.simulateDeposit({
+            senderId: "senderId",
+            amount: 1.1,
+            currency: "USD",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("simulateDeposit (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateDeposit({
+                senderId: "senderId",
+                amount: 200,
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("simulateDeposit (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateDeposit({
+                senderId: "senderId",
+                amount: 200,
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("simulateDeposit (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateDeposit({
+                senderId: "senderId",
+                amount: 200,
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("simulateDeposit (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateDeposit({
+                senderId: "senderId",
+                amount: 200,
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("simulateDeposit (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateDeposit({
+                senderId: "senderId",
+                amount: 200,
+            });
+        }).rejects.toThrow(Mesta.TooManyRequestsError);
+    });
+
+    test("simulateDeposit (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/senderId/accounts/mock-deposit")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.simulateDeposit({
+                senderId: "senderId",
+                amount: 200,
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+});

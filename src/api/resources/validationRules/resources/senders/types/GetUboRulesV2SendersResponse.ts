@@ -1,0 +1,101 @@
+
+export interface GetUboRulesV2SendersResponse {
+    data?: GetUboRulesV2SendersResponse.Data | undefined;
+    requestId?: number | undefined;
+}
+
+export namespace GetUboRulesV2SendersResponse {
+    export interface Data {
+        /** Unique identifier for the validation rules */
+        id?: string | undefined;
+        /** Version number of the rules */
+        version?: number | undefined;
+        createdAt?: string | undefined;
+        updatedAt?: string | undefined;
+        deletedAt?: string | undefined;
+        createdBy?: string | undefined;
+        updatedBy?: string | undefined;
+        deletedBy?: string | undefined;
+        owner?: Data.Owner | undefined;
+        ownerType?: Data.OwnerType | undefined;
+        /** Two-letter country code (ISO 3166-1 alpha-2) */
+        country?: string | undefined;
+        rules?: Data.Rules | undefined;
+    }
+
+    export namespace Data {
+        export const Owner = {
+            Sender: "sender",
+        } as const;
+        export type Owner = (typeof Owner)[keyof typeof Owner];
+        export const OwnerType = {
+            Business: "business",
+        } as const;
+        export type OwnerType = (typeof OwnerType)[keyof typeof OwnerType];
+
+        export interface Rules {
+            ubo?: Rules.Ubo | undefined;
+        }
+
+        export namespace Rules {
+            export interface Ubo {
+                requiredFields?: Ubo.RequiredFields.Item[] | undefined;
+            }
+
+            export namespace Ubo {
+                export type RequiredFields = RequiredFields.Item[];
+
+                export namespace RequiredFields {
+                    export interface Item {
+                        /** Field name (e.g., firstName, lastName, identity) */
+                        field?: string | undefined;
+                        /** Human-readable description of the field */
+                        description?: string | undefined;
+                        /** Nested fields. For identity, the documentType field includes supportedDocumentTypes. */
+                        nestedFields?: Item.NestedFields.Item[] | undefined;
+                    }
+
+                    export namespace Item {
+                        export type NestedFields = NestedFields.Item[];
+
+                        export namespace NestedFields {
+                            export interface Item {
+                                /** Nested field name (e.g., countryCode, documentType) */
+                                field?: string | undefined;
+                                description?: string | undefined;
+                                /** Available identity document types for the requested country. Only present on the documentType nested field. */
+                                supportedDocumentTypes?: Item.SupportedDocumentTypes.Item[] | undefined;
+                            }
+
+                            export namespace Item {
+                                export type SupportedDocumentTypes = SupportedDocumentTypes.Item[];
+
+                                export namespace SupportedDocumentTypes {
+                                    export interface Item {
+                                        /** Document type identifier */
+                                        type: string;
+                                        /** ID_DOCUMENT requires file uploads, ID_NUMBER requires only a document number */
+                                        category: Item.Category;
+                                        /** Whether a front side document image is required */
+                                        requiresFront: boolean;
+                                        /** Whether a back side document image is required */
+                                        requiresBack: boolean;
+                                    }
+
+                                    export namespace Item {
+                                        /** ID_DOCUMENT requires file uploads, ID_NUMBER requires only a document number */
+                                        export const Category = {
+                                            IdDocument: "ID_DOCUMENT",
+                                            IdNumber: "ID_NUMBER",
+                                        } as const;
+                                        export type Category = (typeof Category)[keyof typeof Category];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

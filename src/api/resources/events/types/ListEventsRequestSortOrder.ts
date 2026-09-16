@@ -1,0 +1,6 @@
+
+export const ListEventsRequestSortOrder = {
+    Asc: "ASC",
+    Desc: "DESC",
+} as const;
+export type ListEventsRequestSortOrder = (typeof ListEventsRequestSortOrder)[keyof typeof ListEventsRequestSortOrder];

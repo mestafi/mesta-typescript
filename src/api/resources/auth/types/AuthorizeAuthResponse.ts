@@ -1,0 +1,17 @@
+
+export interface AuthorizeAuthResponse {
+    data?: AuthorizeAuthResponse.Data | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace AuthorizeAuthResponse {
+    export interface Data {
+        /** ID of the authenticated principal */
+        id?: string | undefined;
+        /** Type of principal (user or apiKey) */
+        entity?: string | undefined;
+        /** The authenticated user or API key data */
+        data?: Record<string, unknown> | undefined;
+    }
+}

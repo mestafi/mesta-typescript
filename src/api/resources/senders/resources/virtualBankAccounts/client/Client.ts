@@ -1,0 +1,480 @@
+
+import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../BaseClient.js";
+import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
+import * as core from "../../../../../../core/index.js";
+import { mergeAdditionalBodyParameters } from "../../../../../../core/requestBody.js";
+import * as environments from "../../../../../../environments.js";
+import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStatusCodeError.js";
+import * as errors from "../../../../../../errors/index.js";
+import * as Mesta from "../../../../../index.js";
+
+export declare namespace VirtualBankAccountsClient {
+    export type Options = BaseClientOptions;
+
+    export interface RequestOptions extends BaseRequestOptions {}
+}
+
+export class VirtualBankAccountsClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<VirtualBankAccountsClient.Options>;
+
+    constructor(options: VirtualBankAccountsClient.Options) {
+        this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    /**
+     * Returns the sender's current virtual bank account status for the currency. No request ID is required. This read can reconcile status but cannot start account setup. The endpoint follows the sender's current account configuration; if Mesta changes that configuration, a request associated with the previous configuration is no longer returned and the merchant should POST again for the current configuration.
+     *
+     * @param {Mesta.senders.GetSetupStatusVirtualBankAccountsRequest} request
+     * @param {VirtualBankAccountsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.virtualBankAccounts.getSetupStatus({
+     *         senderId: "senderId",
+     *         currency: "USD"
+     *     })
+     */
+    public getSetupStatus(
+        request: Mesta.senders.GetSetupStatusVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.VirtualAccountSetupEnvelope> {
+        return core.HttpResponsePromise.fromPromise(this.__getSetupStatus(request, requestOptions));
+    }
+
+    private async __getSetupStatus(
+        request: Mesta.senders.GetSetupStatusVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.VirtualAccountSetupEnvelope>> {
+        const { senderId, currency } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/virtual-bank-accounts/${core.url.encodePathParam(currency)}/setup-request`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.VirtualAccountSetupEnvelope, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/senders/{senderId}/virtual-bank-accounts/{currency}/setup-request",
+        );
+    }
+
+    /**
+     * Creates or reuses the current virtual bank account request for this sender and currency. It is evaluated immediately and may begin setup automatically when all requirements are satisfied. Follow returned blocker actions when more information or verification is needed.
+     *
+     * @param {Mesta.senders.RequestSetupVirtualBankAccountsRequest} request
+     * @param {VirtualBankAccountsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.ConflictError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.virtualBankAccounts.requestSetup({
+     *         senderId: "senderId",
+     *         currency: "USD"
+     *     })
+     */
+    public requestSetup(
+        request: Mesta.senders.RequestSetupVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.VirtualAccountSetupEnvelope> {
+        return core.HttpResponsePromise.fromPromise(this.__requestSetup(request, requestOptions));
+    }
+
+    private async __requestSetup(
+        request: Mesta.senders.RequestSetupVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.VirtualAccountSetupEnvelope>> {
+        const { senderId, currency } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/virtual-bank-accounts/${core.url.encodePathParam(currency)}/setup-request`,
+            ),
+            method: "POST",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.VirtualAccountSetupEnvelope, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 409:
+                    throw new Mesta.ConflictError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/senders/{senderId}/virtual-bank-accounts/{currency}/setup-request",
+        );
+    }
+
+    /**
+     * Cancels the current request before account setup begins or after failure. Provisioning and completed requests cannot be cancelled. A later POST creates a fresh current request.
+     *
+     * @param {Mesta.senders.CancelSetupVirtualBankAccountsRequest} request
+     * @param {VirtualBankAccountsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.virtualBankAccounts.cancelSetup({
+     *         senderId: "senderId",
+     *         currency: "USD"
+     *     })
+     */
+    public cancelSetup(
+        request: Mesta.senders.CancelSetupVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.VirtualAccountSetupEnvelope> {
+        return core.HttpResponsePromise.fromPromise(this.__cancelSetup(request, requestOptions));
+    }
+
+    private async __cancelSetup(
+        request: Mesta.senders.CancelSetupVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.VirtualAccountSetupEnvelope>> {
+        const { senderId, currency } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/virtual-bank-accounts/${core.url.encodePathParam(currency)}/setup-request`,
+            ),
+            method: "DELETE",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.VirtualAccountSetupEnvelope, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "DELETE",
+            "/v1/senders/{senderId}/virtual-bank-accounts/{currency}/setup-request",
+        );
+    }
+
+    /**
+     * Fills supported missing sender, UBO, or existing-representative values, then re-evaluates the current setup request. Fields that are not current blockers are skipped and identified in unacceptedFields; other submitted fields are still processed. Existing values cannot be overwritten. To reuse the registered address as the trading address, set senderDetails.tradingAddressSameAsRegistered to true. If a manual tradingAddress is also supplied, the reuse flag takes precedence. Documents and new representatives use their dedicated APIs.
+     *
+     * @param {Mesta.senders.UpdateVirtualAccountSetupData} request
+     * @param {VirtualBankAccountsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.virtualBankAccounts.updateSetupData({
+     *         senderId: "senderId",
+     *         currency: "USD",
+     *         senderDetails: {
+     *             websiteUrl: "https://example.com",
+     *             tradingAddressSameAsRegistered: true
+     *         },
+     *         uboDetails: [{
+     *                 uboId: "c4de346d-7972-4139-b132-974eca8b0606",
+     *                 birthDate: "1990-01-01",
+     *                 nationality: "GB"
+     *             }],
+     *         associateDetails: [{
+     *                 associateId: "a5de346d-7972-4139-b132-974eca8b0606",
+     *                 nationality: "GB",
+     *                 birthDate: "1985-01-01"
+     *             }]
+     *     })
+     *
+     * @example
+     *     await client.senders.virtualBankAccounts.updateSetupData({
+     *         senderId: "senderId",
+     *         currency: "USD",
+     *         senderDetails: {
+     *             tradingAddress: {
+     *                 street: "10 Example Street",
+     *                 city: "London",
+     *                 postalCode: "SW1A 1AA",
+     *                 country: "GB"
+     *             }
+     *         }
+     *     })
+     */
+    public updateSetupData(
+        request: Mesta.senders.UpdateVirtualAccountSetupData,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.VirtualAccountSetupEnvelope> {
+        return core.HttpResponsePromise.fromPromise(this.__updateSetupData(request, requestOptions));
+    }
+
+    private async __updateSetupData(
+        request: Mesta.senders.UpdateVirtualAccountSetupData,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.VirtualAccountSetupEnvelope>> {
+        const { senderId, currency, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/virtual-bank-accounts/${core.url.encodePathParam(currency)}/setup-request/data`,
+            ),
+            method: "PATCH",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.VirtualAccountSetupEnvelope, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "PATCH",
+            "/v1/senders/{senderId}/virtual-bank-accounts/{currency}/setup-request/data",
+        );
+    }
+
+    /**
+     * Returns the virtual bank accounts available to the sender for the requested currency. The response is an array and currently contains at most one account.
+     *
+     * @param {Mesta.senders.GetVirtualBankAccountsRequest} request
+     * @param {VirtualBankAccountsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.virtualBankAccounts.get({
+     *         senderId: "senderId",
+     *         currency: "USD"
+     *     })
+     */
+    public get(
+        request: Mesta.senders.GetVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.SenderVirtualAccountsEnvelope> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Mesta.senders.GetVirtualBankAccountsRequest,
+        requestOptions?: VirtualBankAccountsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.SenderVirtualAccountsEnvelope>> {
+        const { senderId, currency } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/virtual-bank-accounts/${core.url.encodePathParam(currency)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Mesta.SenderVirtualAccountsEnvelope, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/senders/{senderId}/virtual-bank-accounts/{currency}",
+        );
+    }
+}

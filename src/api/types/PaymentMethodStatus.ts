@@ -1,0 +1,10 @@
+
+/** Status of the payment method */
+export const PaymentMethodStatus = {
+    ComplianceReviewRequired: "compliance_review_required",
+    PendingUserConsent: "pending_user_consent",
+    Declined: "declined",
+    Approved: "approved",
+    Inactive: "inactive",
+} as const;
+export type PaymentMethodStatus = (typeof PaymentMethodStatus)[keyof typeof PaymentMethodStatus];

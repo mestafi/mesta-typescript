@@ -1,0 +1,150 @@
+
+import type * as Mesta from "../../../index.js";
+
+export interface GetBeneficiariesResponse {
+    data?: GetBeneficiariesResponse.Data | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace GetBeneficiariesResponse {
+    export interface Data {
+        /** Unique identifier for the beneficiary */
+        id?: string | undefined;
+        /** Type of beneficiary */
+        type?: Data.Type | undefined;
+        /** First name (for individual beneficiaries) */
+        firstName?: (string | null) | undefined;
+        /** Middle name (for individual beneficiaries) */
+        middleName?: (string | null) | undefined;
+        /** Last name (for individual beneficiaries) */
+        lastName?: (string | null) | undefined;
+        /** Full name of the business or individual */
+        fullName?: (string | null) | undefined;
+        /** Date of birth (for individual beneficiaries) */
+        birthDate?: (string | null) | undefined;
+        /** Email address */
+        email?: (string | null) | undefined;
+        /** Phone number in E.164 format */
+        phone?: (string | null) | undefined;
+        address?: Data.Address | undefined;
+        /** Associated merchant ID */
+        merchantId?: string | undefined;
+        verification?: Data.Verification | undefined;
+        /** Whether the beneficiary is active or inactive */
+        status?: Data.Status | undefined;
+        /** Identity document information */
+        identity?: (Data.Identity | null) | undefined;
+        /** Type of business entity (for business beneficiaries) */
+        businessType?: (Data.BusinessType | null) | undefined;
+        /** Business registration number (for business beneficiaries) */
+        businessRegistrationNumber?: (string | null) | undefined;
+        /** Array of payment methods associated with the beneficiary */
+        paymentMethods?: Mesta.PaymentMethod[] | undefined;
+        /** Custom metadata */
+        metadata?: (Record<string, unknown> | null) | undefined;
+        createdAt?: string | undefined;
+        updatedAt?: string | undefined;
+        /** Version number for optimistic locking */
+        version?: number | undefined;
+        beneficiaryRelationship?: Mesta.BeneficiaryRelationship | undefined;
+        purposeOfPayment?: Mesta.PurposeOfPayment | undefined;
+        purposeOfPaymentDocument?: Mesta.PurposeOfPaymentDocument | undefined;
+    }
+
+    export namespace Data {
+        /** Type of beneficiary */
+        export const Type = {
+            Individual: "individual",
+            Business: "business",
+        } as const;
+        export type Type = (typeof Type)[keyof typeof Type];
+
+        export interface Address {
+            street?: string | undefined;
+            street2?: string | undefined;
+            city?: string | undefined;
+            state?: string | undefined;
+            postalCode?: string | undefined;
+            country?: string | undefined;
+        }
+
+        export interface Verification {
+            status?: Verification.Status | undefined;
+            statusUpdatedAt?: string | undefined;
+        }
+
+        export namespace Verification {
+            export const Status = {
+                Unverified: "unverified",
+                Pending: "pending",
+                Approved: "approved",
+                Declined: "declined",
+            } as const;
+            export type Status = (typeof Status)[keyof typeof Status];
+        }
+
+        /** Whether the beneficiary is active or inactive */
+        export const Status = {
+            Active: "active",
+            Inactive: "inactive",
+        } as const;
+        export type Status = (typeof Status)[keyof typeof Status];
+
+        /**
+         * Identity document information
+         */
+        export interface Identity {
+            /** Type of identity document */
+            documentType?: Identity.DocumentType | undefined;
+            /** Document number */
+            documentNumber?: string | undefined;
+            /** Issue date (YYYY-MM-DD) */
+            issueDate?: (string | null) | undefined;
+            /** Expiry date (YYYY-MM-DD) */
+            expiryDate?: (string | null) | undefined;
+            /** Issuing authority */
+            issuer?: (string | null) | undefined;
+            /** Two-letter country code of the identity document */
+            countryCode?: string | undefined;
+            /** Front side of the identity document */
+            front?: (Identity.Front | null) | undefined;
+        }
+
+        export namespace Identity {
+            /** Type of identity document */
+            export const DocumentType = {
+                Passport: "PASSPORT",
+                DriverLicense: "DRIVER_LICENSE",
+                NationalId: "NATIONAL_ID",
+                IdCard: "ID_CARD",
+                ResidentCard: "RESIDENT_CARD",
+                VoterIdCard: "VOTER_ID_CARD",
+                TaxId: "TAX_ID",
+            } as const;
+            export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType];
+
+            /**
+             * Front side of the identity document
+             */
+            export interface Front {
+                /** Document ID */
+                id?: string | undefined;
+                /** URL to access the document */
+                url?: string | undefined;
+                /** S3 storage key for the document */
+                s3Key?: string | undefined;
+            }
+        }
+
+        /** Type of business entity (for business beneficiaries) */
+        export const BusinessType = {
+            SoleProprietorship: "sole_proprietorship",
+            Partnership: "partnership",
+            Corporation: "corporation",
+            LimitedLiabilityCompany: "limited_liability_company",
+            Other: "other",
+        } as const;
+        export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType];
+    }
+}

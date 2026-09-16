@@ -1,0 +1,254 @@
+
+import * as Mesta from "../../../src/api/index";
+import { MestaClient } from "../../../src/Client";
+import { mockServerPool } from "../../mock-server/MockServerPool";
+
+describe("DepositBankAccountsClient", () => {
+    test("generateOnDemand (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "EUR" };
+        const rawResponseBody = { data: { message: "Deposit bank account creation started for EUR." }, requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.depositBankAccounts.generateOnDemand({
+            id: "id",
+            currency: "EUR",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("generateOnDemand (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "GBP" };
+        const rawResponseBody = { data: { message: "Deposit bank account creation started for EUR." }, requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.depositBankAccounts.generateOnDemand({
+            id: "id",
+            currency: "GBP",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("generateOnDemand (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "MXN" };
+        const rawResponseBody = { data: { message: "Deposit bank account creation started for EUR." }, requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.depositBankAccounts.generateOnDemand({
+            id: "id",
+            currency: "MXN",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("generateOnDemand (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "USD" };
+        const rawResponseBody = { data: { message: "Deposit bank account creation started for EUR." }, requestId: 1 };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.senders.depositBankAccounts.generateOnDemand({
+            id: "id",
+            currency: "USD",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("generateOnDemand (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "EUR" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.depositBankAccounts.generateOnDemand({
+                id: "id",
+                currency: "EUR",
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("generateOnDemand (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "EUR" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.depositBankAccounts.generateOnDemand({
+                id: "id",
+                currency: "EUR",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("generateOnDemand (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "EUR" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.depositBankAccounts.generateOnDemand({
+                id: "id",
+                currency: "EUR",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("generateOnDemand (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "EUR" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.depositBankAccounts.generateOnDemand({
+                id: "id",
+                currency: "EUR",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("generateOnDemand (9)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { currency: "EUR" };
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/v1/senders/id/generate-ondemand-deposit-bank-accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.senders.depositBankAccounts.generateOnDemand({
+                id: "id",
+                currency: "EUR",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+});

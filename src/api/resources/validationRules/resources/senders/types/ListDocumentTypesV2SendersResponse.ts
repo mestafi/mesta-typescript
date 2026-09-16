@@ -1,0 +1,60 @@
+
+export interface ListDocumentTypesV2SendersResponse {
+    data?: ListDocumentTypesV2SendersResponse.Data | undefined;
+    requestId?: number | undefined;
+}
+
+export namespace ListDocumentTypesV2SendersResponse {
+    export interface Data {
+        id?: string | undefined;
+        version?: number | undefined;
+        createdAt?: string | undefined;
+        updatedAt?: string | undefined;
+        deletedAt?: string | undefined;
+        createdBy?: string | undefined;
+        updatedBy?: string | undefined;
+        deletedBy?: string | undefined;
+        owner?: Data.Owner | undefined;
+        ownerType?: Data.OwnerType | undefined;
+        country?: string | undefined;
+        rules?: Data.Rules | undefined;
+    }
+
+    export namespace Data {
+        export const Owner = {
+            Sender: "sender",
+        } as const;
+        export type Owner = (typeof Owner)[keyof typeof Owner];
+        export const OwnerType = {
+            Business: "business",
+        } as const;
+        export type OwnerType = (typeof OwnerType)[keyof typeof OwnerType];
+
+        export interface Rules {
+            /** List of required documents for business verification */
+            requiredDocuments?: Rules.RequiredDocuments.Item[] | undefined;
+        }
+
+        export namespace Rules {
+            export type RequiredDocuments = RequiredDocuments.Item[];
+
+            export namespace RequiredDocuments {
+                export interface Item {
+                    /** Type identifier for the required document */
+                    type: Item.Type;
+                    /** Human-readable description of the required document */
+                    description: string;
+                }
+
+                export namespace Item {
+                    /** Type identifier for the required document */
+                    export const Type = {
+                        BusinessRegistrationProof: "business_registration_proof",
+                        AddressProof: "address_proof",
+                    } as const;
+                    export type Type = (typeof Type)[keyof typeof Type];
+                }
+            }
+        }
+    }
+}

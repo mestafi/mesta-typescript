@@ -1,0 +1,99 @@
+
+import type * as Mesta from "../../../../../../index.js";
+
+/**
+ * @example
+ *     {
+ *         senderId: "senderId",
+ *         currency: "USD",
+ *         senderDetails: {
+ *             websiteUrl: "https://example.com",
+ *             tradingAddressSameAsRegistered: true
+ *         },
+ *         uboDetails: [{
+ *                 uboId: "c4de346d-7972-4139-b132-974eca8b0606",
+ *                 birthDate: "1990-01-01",
+ *                 nationality: "GB"
+ *             }],
+ *         associateDetails: [{
+ *                 associateId: "a5de346d-7972-4139-b132-974eca8b0606",
+ *                 nationality: "GB",
+ *                 birthDate: "1985-01-01"
+ *             }]
+ *     }
+ *
+ * @example
+ *     {
+ *         senderId: "senderId",
+ *         currency: "USD",
+ *         senderDetails: {
+ *             tradingAddress: {
+ *                 street: "10 Example Street",
+ *                 city: "London",
+ *                 postalCode: "SW1A 1AA",
+ *                 country: "GB"
+ *             }
+ *         }
+ *     }
+ */
+export interface UpdateVirtualAccountSetupData {
+    senderId: string;
+    currency: Mesta.senders.UpdateSetupDataVirtualBankAccountsRequestCurrency;
+    /** Previously absent business-sender details required by the requested account. */
+    senderDetails?: UpdateVirtualAccountSetupData.SenderDetails;
+    uboDetails?: UpdateVirtualAccountSetupData.UboDetails.Item[];
+    associateDetails?: UpdateVirtualAccountSetupData.AssociateDetails.Item[];
+}
+
+export namespace UpdateVirtualAccountSetupData {
+    /**
+     * Previously absent business-sender details required by the requested account.
+     */
+    export interface SenderDetails {
+        fullName?: string | undefined;
+        identificationNumber?: string | undefined;
+        registrationDate?: string | undefined;
+        businessType?: SenderDetails.BusinessType | undefined;
+        phone?: string | undefined;
+        websiteUrl?: string | undefined;
+        taxIdentificationNumber?: string | undefined;
+        addresses?: Mesta.Address[] | undefined;
+        /** The business's trading address when it differs from, or should be supplied independently of, the registered address. Ignored when tradingAddressSameAsRegistered is true. */
+        tradingAddress?: Mesta.Address | undefined;
+        /** Set to true to use a server-side snapshot of the sender's primary registered address exactly as it is stored. If tradingAddress is also supplied, this flag takes precedence and the supplied tradingAddress is ignored. */
+        tradingAddressSameAsRegistered?: boolean | undefined;
+    }
+
+    export namespace SenderDetails {
+        export const BusinessType = {
+            Corporation: "corporation",
+            LimitedLiabilityCompany: "limited_liability_company",
+            Partnership: "partnership",
+            SoleProprietorship: "sole_proprietorship",
+            Other: "other",
+        } as const;
+        export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType];
+    }
+
+    export type UboDetails = UboDetails.Item[];
+
+    export namespace UboDetails {
+        export interface Item {
+            uboId: string;
+            birthDate?: string | undefined;
+            ownershipPercent?: number | undefined;
+            taxIdentificationNumber?: string | undefined;
+            nationality?: string | undefined;
+        }
+    }
+
+    export type AssociateDetails = AssociateDetails.Item[];
+
+    export namespace AssociateDetails {
+        export interface Item {
+            associateId: string;
+            nationality?: string | undefined;
+            birthDate?: string | undefined;
+        }
+    }
+}

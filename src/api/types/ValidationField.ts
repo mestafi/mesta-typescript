@@ -1,0 +1,13 @@
+
+import type * as Mesta from "../index.js";
+
+export interface ValidationField {
+    /** Field name */
+    field: string;
+    /** Human-readable description */
+    description: string;
+    /** Sub-fields for nested objects (address, identity, paymentInfo) */
+    nestedFields?: Mesta.ValidationField[] | undefined;
+    /** Alternative sub-field key (used for address in some contexts) */
+    fields?: Mesta.ValidationField[] | undefined;
+}

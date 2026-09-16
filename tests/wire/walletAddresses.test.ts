@@ -1,0 +1,174 @@
+
+import * as Mesta from "../../src/api/index";
+import { MestaClient } from "../../src/Client";
+import { mockServerPool } from "../mock-server/MockServerPool";
+
+describe("WalletAddressesClient", () => {
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "a385852a-2699-43b9-9745-2f8152b5aa24",
+                createdAt: "2024-10-04T00:09:44Z",
+                updatedAt: "2024-11-16T21:49:47Z",
+                address: "address",
+                chain: "ethereum",
+                ownerId: "877157e3-5433-4a17-b89e-92bb2709fc44",
+                ownerType: "merchant",
+                riskLevel: "low",
+                merchantId: "ccfbddf1-009d-4b1c-aaa7-1f5eecc4398a",
+            },
+            requestId: 37772,
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/source-wallet-addresses/id")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.walletAddresses.get({
+            id: "id",
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/source-wallet-addresses/id")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.walletAddresses.get({
+                id: "id",
+            });
+        }).rejects.toThrow(Mesta.BadRequestError);
+    });
+
+    test("get (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/source-wallet-addresses/id")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.walletAddresses.get({
+                id: "id",
+            });
+        }).rejects.toThrow(Mesta.UnauthorizedError);
+    });
+
+    test("get (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/source-wallet-addresses/id")
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.walletAddresses.get({
+                id: "id",
+            });
+        }).rejects.toThrow(Mesta.ForbiddenError);
+    });
+
+    test("get (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/source-wallet-addresses/id")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.walletAddresses.get({
+                id: "id",
+            });
+        }).rejects.toThrow(Mesta.NotFoundError);
+    });
+
+    test("get (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new MestaClient({
+            maxRetries: 0,
+            apiKey: "test",
+            apiSecret: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .get("/v1/source-wallet-addresses/id")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.walletAddresses.get({
+                id: "id",
+            });
+        }).rejects.toThrow(Mesta.InternalServerError);
+    });
+});

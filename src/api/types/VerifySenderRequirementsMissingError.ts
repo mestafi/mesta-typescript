@@ -1,0 +1,28 @@
+
+import type * as Mesta from "../index.js";
+
+export interface VerifySenderRequirementsMissingError {
+    /** Standard Mesta error envelope. Property names are uppercase. */
+    error: VerifySenderRequirementsMissingError.Error_;
+    /** Trace identifier for support and debugging. */
+    requestId?: number | undefined;
+}
+
+export namespace VerifySenderRequirementsMissingError {
+    /**
+     * Standard Mesta error envelope. Property names are uppercase.
+     */
+    export interface Error_ {
+        CODE: Error_.Code;
+        MESSAGE: string;
+        /** Actionable verification blockers. These have the same public semantics as setup-request blockers. */
+        DETAILS: Mesta.VerifySenderRequirementsBlocker[];
+    }
+
+    export namespace Error_ {
+        export const Code = {
+            CapabilityRequirementsMissing: "CAPABILITY_REQUIREMENTS_MISSING",
+        } as const;
+        export type Code = (typeof Code)[keyof typeof Code];
+    }
+}

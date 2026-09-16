@@ -1,0 +1,198 @@
+
+import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../BaseClient.js";
+import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
+import * as core from "../../../../../../core/index.js";
+import * as environments from "../../../../../../environments.js";
+import { handleNonStatusCodeError } from "../../../../../../errors/handleNonStatusCodeError.js";
+import * as errors from "../../../../../../errors/index.js";
+import * as Mesta from "../../../../../index.js";
+
+export declare namespace TermsOfServiceClient {
+    export type Options = BaseClientOptions;
+
+    export interface RequestOptions extends BaseRequestOptions {}
+}
+
+export class TermsOfServiceClient {
+    protected readonly _options: NormalizedClientOptionsWithAuth<TermsOfServiceClient.Options>;
+
+    constructor(options: TermsOfServiceClient.Options) {
+        this._options = normalizeClientOptionsWithAuth(options);
+    }
+
+    /**
+     * Retrieves the current Terms of Service acceptance status for a specific sender, along with the active shareable acceptance link. In the current sender flow, a TOS acceptance link is generated during sender creation. Use this endpoint to check whether the sender has accepted the TOS, retrieve the active acceptance link, and verify whether the link has expired.
+     *
+     * @param {Mesta.senders.GetStatusTermsOfServiceRequest} request
+     * @param {TermsOfServiceClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.UnauthorizedError}
+     * @throws {@link Mesta.ForbiddenError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.termsOfService.getStatus({
+     *         senderId: "senderId"
+     *     })
+     */
+    public getStatus(
+        request: Mesta.senders.GetStatusTermsOfServiceRequest,
+        requestOptions?: TermsOfServiceClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.senders.GetStatusTermsOfServiceResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getStatus(request, requestOptions));
+    }
+
+    private async __getStatus(
+        request: Mesta.senders.GetStatusTermsOfServiceRequest,
+        requestOptions?: TermsOfServiceClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.senders.GetStatusTermsOfServiceResponse>> {
+        const { senderId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/${core.url.encodePathParam(senderId)}/tos-status`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.senders.GetStatusTermsOfServiceResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Mesta.UnauthorizedError(_response.error.body as unknown, _response.rawResponse);
+                case 403:
+                    throw new Mesta.ForbiddenError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/senders/{senderId}/tos-status",
+        );
+    }
+
+    /**
+     * Retrieves the Terms of Service acceptance details for a given token. This is a public endpoint that does not require authentication.
+     *
+     * @param {Mesta.senders.GetAcceptanceTermsOfServiceRequest} request
+     * @param {TermsOfServiceClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Mesta.BadRequestError}
+     * @throws {@link Mesta.NotFoundError}
+     * @throws {@link Mesta.InternalServerError}
+     * @throws {@link errors.MestaError}
+     * @throws {@link errors.MestaTimeoutError}
+     *
+     * @example
+     *     await client.senders.termsOfService.getAcceptance({
+     *         token: "token"
+     *     })
+     */
+    public getAcceptance(
+        request: Mesta.senders.GetAcceptanceTermsOfServiceRequest,
+        requestOptions?: TermsOfServiceClient.RequestOptions,
+    ): core.HttpResponsePromise<Mesta.senders.GetAcceptanceTermsOfServiceResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__getAcceptance(request, requestOptions));
+    }
+
+    private async __getAcceptance(
+        request: Mesta.senders.GetAcceptanceTermsOfServiceRequest,
+        requestOptions?: TermsOfServiceClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Mesta.senders.GetAcceptanceTermsOfServiceResponse>> {
+        const { token } = request;
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "x-api-secret": requestOptions?.apiSecret ?? this._options?.apiSecret }),
+            requestOptions?.headers,
+        );
+        const _response = await (this._options.fetcher ?? core.fetcher)({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.MestaEnvironment.Production,
+                `v1/senders/tos-acceptance/${core.url.encodePathParam(token)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: _response.body as Mesta.senders.GetAcceptanceTermsOfServiceResponse,
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Mesta.BadRequestError(_response.error.body as unknown, _response.rawResponse);
+                case 404:
+                    throw new Mesta.NotFoundError(_response.error.body as unknown, _response.rawResponse);
+                case 500:
+                    throw new Mesta.InternalServerError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.MestaError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/senders/tos-acceptance/{token}",
+        );
+    }
+}

@@ -1,0 +1,8 @@
+
+import type * as Mesta from "../../../../../index.js";
+
+export interface GetFiatDepositsResponse {
+    data?: Mesta.FiatDepositDetail | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}

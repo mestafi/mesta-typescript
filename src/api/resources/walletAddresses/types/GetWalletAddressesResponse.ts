@@ -1,0 +1,56 @@
+
+export interface GetWalletAddressesResponse {
+    data?: GetWalletAddressesResponse.Data | undefined;
+    /** Unique identifier for the API request */
+    requestId?: number | undefined;
+}
+
+export namespace GetWalletAddressesResponse {
+    export interface Data {
+        /** Unique identifier for the source address */
+        id?: string | undefined;
+        /** Timestamp when the source address was created */
+        createdAt?: string | undefined;
+        /** Timestamp when the source address was last updated */
+        updatedAt?: string | undefined;
+        /** The blockchain address */
+        address?: string | undefined;
+        /** The blockchain network */
+        chain?: Data.Chain | undefined;
+        /** Identifier of the address owner (merchant or sender) */
+        ownerId?: string | undefined;
+        /** Type of the address owner */
+        ownerType?: Data.OwnerType | undefined;
+        /** Risk assessment level of the address */
+        riskLevel?: Data.RiskLevel | undefined;
+        /** Identifier of the merchant associated with this address */
+        merchantId?: string | undefined;
+    }
+
+    export namespace Data {
+        /** The blockchain network */
+        export const Chain = {
+            Ethereum: "ethereum",
+            Polygon: "polygon",
+            Solana: "solana",
+            Tron: "tron",
+            Stellar: "stellar",
+        } as const;
+        export type Chain = (typeof Chain)[keyof typeof Chain];
+        /** Type of the address owner */
+        export const OwnerType = {
+            Merchant: "merchant",
+            Sender: "sender",
+            Organization: "organization",
+        } as const;
+        export type OwnerType = (typeof OwnerType)[keyof typeof OwnerType];
+        /** Risk assessment level of the address */
+        export const RiskLevel = {
+            Low: "low",
+            Medium: "medium",
+            High: "high",
+            Critical: "critical",
+        } as const;
+        export type RiskLevel = (typeof RiskLevel)[keyof typeof RiskLevel];
+    }
+}

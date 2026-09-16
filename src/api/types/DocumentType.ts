@@ -1,0 +1,10 @@
+
+/** Type of document being uploaded */
+export const DocumentType = {
+    Invoice: "invoice",
+    Payslip: "payslip",
+    EmploymentContract: "employment_contract",
+    InterCompanyAgreement: "inter_company_agreement",
+    Other: "other",
+} as const;
+export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType];

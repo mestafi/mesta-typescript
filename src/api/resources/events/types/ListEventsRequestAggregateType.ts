@@ -1,0 +1,11 @@
+
+export const ListEventsRequestAggregateType = {
+    Order: "order",
+    Merchant: "merchant",
+    Transaction: "transaction",
+    Sender: "sender",
+    BatchOrder: "batch_order",
+    Beneficiary: "beneficiary",
+} as const;
+export type ListEventsRequestAggregateType =
+    (typeof ListEventsRequestAggregateType)[keyof typeof ListEventsRequestAggregateType];

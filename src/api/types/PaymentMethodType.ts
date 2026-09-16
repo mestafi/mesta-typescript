@@ -1,0 +1,12 @@
+
+/** Type of payment method */
+export const PaymentMethodType = {
+    BankAccount: "bank_account",
+    Pix: "pix",
+    SwiftpayPesonet: "swiftpay_pesonet",
+    Instapay: "instapay",
+    Spei: "spei",
+    MobileMoney: "mobile_money",
+    CryptoWallet: "crypto_wallet",
+} as const;
+export type PaymentMethodType = (typeof PaymentMethodType)[keyof typeof PaymentMethodType];
