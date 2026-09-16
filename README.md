@@ -1,5 +1,6 @@
 # Mesta TypeScript Library
 
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fmestafi%2Fmesta-typescript)
 [![npm shield](https://img.shields.io/npm/v/mesta)](https://www.npmjs.com/package/mesta)
 
 The official Mesta client library. It is generated from the Mesta OpenAPI specification and updated with every API release. Each method calls one API endpoint. For end-to-end flows such as onboarding a sender or making a payout, follow the guides at https://docs.mesta.xyz.
@@ -25,6 +26,7 @@ The official Mesta client library. It is generated from the Mesta OpenAPI specif
   - [Custom Fetch](#custom-fetch)
   - [Custom Fetcher](#custom-fetcher)
   - [Runtime Compatibility](#runtime-compatibility)
+- [Retries and Writes](#retries-and-writes)
 
 ## Documentation
 
@@ -316,6 +318,7 @@ The SDK works in the following runtimes:
 - Bun 1.0+
 - React Native
 
+
 ## Retries and writes
 
 The client retries a request up to two times on 408, 429 and 5xx responses, with backoff and jitter. The Mesta API does not accept an idempotency key yet, so a retried write, for example creating an order or a beneficiary, can be processed twice if the first attempt reached the server before it failed. Until idempotency keys are available, disable retries on writes and handle the error in your code:
@@ -323,3 +326,4 @@ The client retries a request up to two times on 408, 429 and 5xx responses, with
 ```ts
 await client.orders.create({ ... }, { maxRetries: 0 });
 ```
+
