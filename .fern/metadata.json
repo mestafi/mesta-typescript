@@ -1,0 +1,15 @@
+{
+    "cliVersion": "5.123.0",
+    "generatorName": "fernapi/fern-typescript-sdk",
+    "generatorVersion": "3.94.2",
+    "generatorConfig": {
+        "namespaceExport": "Mesta",
+        "allowCustomFetcher": true,
+        "includeUtilsOnUnionMembers": true
+    },
+    "originGitCommit": "f63d8af991324f272e2e0afbac3856b8c1ab9e03",
+    "originGitCommitIsDirty": false,
+    "invokedBy": "manual",
+    "requestedVersion": "0.1.0",
+    "sdkVersion": "0.1.0"
+}
