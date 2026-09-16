@@ -316,4 +316,10 @@ The SDK works in the following runtimes:
 - Bun 1.0+
 - React Native
 
+## Retries and writes
 
+The client retries a request up to two times on 408, 429 and 5xx responses, with backoff and jitter. The Mesta API does not accept an idempotency key yet, so a retried write, for example creating an order or a beneficiary, can be processed twice if the first attempt reached the server before it failed. Until idempotency keys are available, disable retries on writes and handle the error in your code:
+
+```ts
+await client.orders.create({ ... }, { maxRetries: 0 });
+```

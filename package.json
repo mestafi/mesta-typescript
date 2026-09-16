@@ -1,6 +1,9 @@
 {
     "name": "mesta",
     "version": "0.1.0",
+    "description": "Official Mesta TypeScript SDK",
+    "author": "Mesta <support@mesta.xyz>",
+    "homepage": "https://docs.mesta.xyz",
     "private": false,
     "repository": {
         "type": "git",
