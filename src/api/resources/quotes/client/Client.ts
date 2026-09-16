@@ -210,7 +210,8 @@ export class QuotesClient {
      *
      * @example
      *     await client.quotes.create({
-     *         "key": "value"
+     *         targetCurrency: "targetCurrency",
+     *         sourceCurrency: "USD"
      *     })
      */
     public create(

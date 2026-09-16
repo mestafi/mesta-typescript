@@ -1610,7 +1610,8 @@ Obtain a quote for converting USD or USDC to another specified currency. For web
 
 ```typescript
 await client.quotes.create({
-    "key": "value"
+    targetCurrency: "targetCurrency",
+    sourceCurrency: "USD"
 });
 
 ```

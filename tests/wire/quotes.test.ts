@@ -244,27 +244,27 @@ describe("QuotesClient", () => {
             apiSecret: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { targetCurrency: "targetCurrency", sourceCurrency: "USD" };
         const rawResponseBody = {
             data: {
-                id: "id",
+                id: "fa026f01-ab7b-48f0-9aeb-4b4a1186d42c",
                 version: 1,
-                createdAt: "2024-01-15T09:30:00Z",
-                updatedAt: "2024-01-15T09:30:00Z",
-                merchantId: "merchantId",
-                sourceCurrency: "sourceCurrency",
-                targetCurrency: "targetCurrency",
-                grossSourceAmount: "grossSourceAmount",
-                developerFee: "developerFee",
-                targetAmount: "targetAmount",
+                createdAt: "2024-11-17T04:56:19Z",
+                updatedAt: "2024-11-17T04:56:19Z",
+                merchantId: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                sourceCurrency: "USDC",
+                targetCurrency: "INR",
+                grossSourceAmount: "2.67",
+                developerFee: "1.50",
+                targetAmount: "200",
                 transferType: "ach",
-                expiresAt: "2024-01-15T09:30:00Z",
+                expiresAt: "2024-11-17T05:01:19Z",
                 status: "created",
                 notes: "notes",
                 failureReason: "failureReason",
-                fircRequired: true,
+                fircRequired: false,
             },
-            requestId: 1,
+            requestId: 43622,
         };
 
         server
@@ -277,7 +277,8 @@ describe("QuotesClient", () => {
             .build();
 
         const response = await client.quotes.create({
-            key: "value",
+            targetCurrency: "targetCurrency",
+            sourceCurrency: "USD",
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -290,7 +291,7 @@ describe("QuotesClient", () => {
             apiSecret: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { targetCurrency: "targetCurrency", sourceCurrency: "USD" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -304,7 +305,8 @@ describe("QuotesClient", () => {
 
         await expect(async () => {
             return await client.quotes.create({
-                key: "value",
+                targetCurrency: "targetCurrency",
+                sourceCurrency: "USD",
             });
         }).rejects.toThrow(Mesta.BadRequestError);
     });
@@ -317,7 +319,7 @@ describe("QuotesClient", () => {
             apiSecret: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { targetCurrency: "targetCurrency", sourceCurrency: "USD" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -331,7 +333,8 @@ describe("QuotesClient", () => {
 
         await expect(async () => {
             return await client.quotes.create({
-                key: "value",
+                targetCurrency: "targetCurrency",
+                sourceCurrency: "USD",
             });
         }).rejects.toThrow(Mesta.UnauthorizedError);
     });
@@ -344,7 +347,7 @@ describe("QuotesClient", () => {
             apiSecret: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { targetCurrency: "targetCurrency", sourceCurrency: "USD" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -358,7 +361,8 @@ describe("QuotesClient", () => {
 
         await expect(async () => {
             return await client.quotes.create({
-                key: "value",
+                targetCurrency: "targetCurrency",
+                sourceCurrency: "USD",
             });
         }).rejects.toThrow(Mesta.ForbiddenError);
     });
@@ -371,7 +375,7 @@ describe("QuotesClient", () => {
             apiSecret: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { targetCurrency: "targetCurrency", sourceCurrency: "USD" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -385,7 +389,8 @@ describe("QuotesClient", () => {
 
         await expect(async () => {
             return await client.quotes.create({
-                key: "value",
+                targetCurrency: "targetCurrency",
+                sourceCurrency: "USD",
             });
         }).rejects.toThrow(Mesta.NotFoundError);
     });
@@ -398,7 +403,7 @@ describe("QuotesClient", () => {
             apiSecret: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { key: "value" };
+        const rawRequestBody = { targetCurrency: "targetCurrency", sourceCurrency: "USD" };
         const rawResponseBody = {};
 
         server
@@ -412,7 +417,8 @@ describe("QuotesClient", () => {
 
         await expect(async () => {
             return await client.quotes.create({
-                key: "value",
+                targetCurrency: "targetCurrency",
+                sourceCurrency: "USD",
             });
         }).rejects.toThrow(Mesta.InternalServerError);
     });
