@@ -1,0 +1,388 @@
+{
+    "name": "mesta",
+    "version": "0.1.0",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mestafi/mesta-typescript.git"
+    },
+    "type": "commonjs",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/esm/index.d.mts",
+                "default": "./dist/esm/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.ts",
+                "default": "./dist/cjs/index.js"
+            },
+            "default": "./dist/cjs/index.js"
+        },
+        "./merchants": {
+            "import": {
+                "types": "./dist/esm/api/resources/merchants/exports.d.mts",
+                "default": "./dist/esm/api/resources/merchants/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/merchants/exports.d.ts",
+                "default": "./dist/cjs/api/resources/merchants/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/merchants/exports.js"
+        },
+        "./walletAddresses": {
+            "import": {
+                "types": "./dist/esm/api/resources/walletAddresses/exports.d.mts",
+                "default": "./dist/esm/api/resources/walletAddresses/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/walletAddresses/exports.d.ts",
+                "default": "./dist/cjs/api/resources/walletAddresses/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/walletAddresses/exports.js"
+        },
+        "./senders": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/exports.js"
+        },
+        "./beneficiaries": {
+            "import": {
+                "types": "./dist/esm/api/resources/beneficiaries/exports.d.mts",
+                "default": "./dist/esm/api/resources/beneficiaries/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beneficiaries/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beneficiaries/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beneficiaries/exports.js"
+        },
+        "./quotes": {
+            "import": {
+                "types": "./dist/esm/api/resources/quotes/exports.d.mts",
+                "default": "./dist/esm/api/resources/quotes/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/quotes/exports.d.ts",
+                "default": "./dist/cjs/api/resources/quotes/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/quotes/exports.js"
+        },
+        "./orders": {
+            "import": {
+                "types": "./dist/esm/api/resources/orders/exports.d.mts",
+                "default": "./dist/esm/api/resources/orders/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/orders/exports.d.ts",
+                "default": "./dist/cjs/api/resources/orders/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/orders/exports.js"
+        },
+        "./webhooks": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/exports.js"
+        },
+        "./paymentMethods": {
+            "import": {
+                "types": "./dist/esm/api/resources/paymentMethods/exports.d.mts",
+                "default": "./dist/esm/api/resources/paymentMethods/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/paymentMethods/exports.d.ts",
+                "default": "./dist/cjs/api/resources/paymentMethods/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/paymentMethods/exports.js"
+        },
+        "./validationRules": {
+            "import": {
+                "types": "./dist/esm/api/resources/validationRules/exports.d.mts",
+                "default": "./dist/esm/api/resources/validationRules/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/validationRules/exports.d.ts",
+                "default": "./dist/cjs/api/resources/validationRules/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/validationRules/exports.js"
+        },
+        "./events": {
+            "import": {
+                "types": "./dist/esm/api/resources/events/exports.d.mts",
+                "default": "./dist/esm/api/resources/events/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/events/exports.d.ts",
+                "default": "./dist/cjs/api/resources/events/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/events/exports.js"
+        },
+        "./auth": {
+            "import": {
+                "types": "./dist/esm/api/resources/auth/exports.d.mts",
+                "default": "./dist/esm/api/resources/auth/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/auth/exports.d.ts",
+                "default": "./dist/cjs/api/resources/auth/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/auth/exports.js"
+        },
+        "./apiKeys": {
+            "import": {
+                "types": "./dist/esm/api/resources/apiKeys/exports.d.mts",
+                "default": "./dist/esm/api/resources/apiKeys/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/apiKeys/exports.d.ts",
+                "default": "./dist/cjs/api/resources/apiKeys/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/apiKeys/exports.js"
+        },
+        "./transfers": {
+            "import": {
+                "types": "./dist/esm/api/resources/transfers/exports.d.mts",
+                "default": "./dist/esm/api/resources/transfers/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/transfers/exports.d.ts",
+                "default": "./dist/cjs/api/resources/transfers/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/transfers/exports.js"
+        },
+        "./beneficiaries/documents": {
+            "import": {
+                "types": "./dist/esm/api/resources/beneficiaries/resources/documents/exports.d.mts",
+                "default": "./dist/esm/api/resources/beneficiaries/resources/documents/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/beneficiaries/resources/documents/exports.d.ts",
+                "default": "./dist/cjs/api/resources/beneficiaries/resources/documents/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/beneficiaries/resources/documents/exports.js"
+        },
+        "./merchants/accounts": {
+            "import": {
+                "types": "./dist/esm/api/resources/merchants/resources/accounts/exports.d.mts",
+                "default": "./dist/esm/api/resources/merchants/resources/accounts/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/merchants/resources/accounts/exports.d.ts",
+                "default": "./dist/cjs/api/resources/merchants/resources/accounts/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/merchants/resources/accounts/exports.js"
+        },
+        "./merchants/transactions": {
+            "import": {
+                "types": "./dist/esm/api/resources/merchants/resources/transactions/exports.d.mts",
+                "default": "./dist/esm/api/resources/merchants/resources/transactions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/merchants/resources/transactions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/merchants/resources/transactions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/merchants/resources/transactions/exports.js"
+        },
+        "./merchants/stablecoinDeposits": {
+            "import": {
+                "types": "./dist/esm/api/resources/merchants/resources/stablecoinDeposits/exports.d.mts",
+                "default": "./dist/esm/api/resources/merchants/resources/stablecoinDeposits/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/merchants/resources/stablecoinDeposits/exports.d.ts",
+                "default": "./dist/cjs/api/resources/merchants/resources/stablecoinDeposits/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/merchants/resources/stablecoinDeposits/exports.js"
+        },
+        "./merchants/fiatDeposits": {
+            "import": {
+                "types": "./dist/esm/api/resources/merchants/resources/fiatDeposits/exports.d.mts",
+                "default": "./dist/esm/api/resources/merchants/resources/fiatDeposits/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/merchants/resources/fiatDeposits/exports.d.ts",
+                "default": "./dist/cjs/api/resources/merchants/resources/fiatDeposits/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/merchants/resources/fiatDeposits/exports.js"
+        },
+        "./merchants/sourceWalletAddresses": {
+            "import": {
+                "types": "./dist/esm/api/resources/merchants/resources/sourceWalletAddresses/exports.d.mts",
+                "default": "./dist/esm/api/resources/merchants/resources/sourceWalletAddresses/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/merchants/resources/sourceWalletAddresses/exports.d.ts",
+                "default": "./dist/cjs/api/resources/merchants/resources/sourceWalletAddresses/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/merchants/resources/sourceWalletAddresses/exports.js"
+        },
+        "./orders/documents": {
+            "import": {
+                "types": "./dist/esm/api/resources/orders/resources/documents/exports.d.mts",
+                "default": "./dist/esm/api/resources/orders/resources/documents/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/orders/resources/documents/exports.d.ts",
+                "default": "./dist/cjs/api/resources/orders/resources/documents/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/orders/resources/documents/exports.js"
+        },
+        "./senders/associates": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/associates/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/associates/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/associates/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/associates/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/associates/exports.js"
+        },
+        "./senders/virtualBankAccounts": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/virtualBankAccounts/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/virtualBankAccounts/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/virtualBankAccounts/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/virtualBankAccounts/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/virtualBankAccounts/exports.js"
+        },
+        "./senders/sourceWalletAddresses": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/sourceWalletAddresses/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/sourceWalletAddresses/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/sourceWalletAddresses/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/sourceWalletAddresses/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/sourceWalletAddresses/exports.js"
+        },
+        "./senders/ubos": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/ubos/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/ubos/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/ubos/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/ubos/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/ubos/exports.js"
+        },
+        "./senders/documents": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/documents/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/documents/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/documents/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/documents/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/documents/exports.js"
+        },
+        "./senders/termsOfService": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/termsOfService/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/termsOfService/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/termsOfService/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/termsOfService/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/termsOfService/exports.js"
+        },
+        "./senders/depositBankAccounts": {
+            "import": {
+                "types": "./dist/esm/api/resources/senders/resources/depositBankAccounts/exports.d.mts",
+                "default": "./dist/esm/api/resources/senders/resources/depositBankAccounts/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/senders/resources/depositBankAccounts/exports.d.ts",
+                "default": "./dist/cjs/api/resources/senders/resources/depositBankAccounts/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/senders/resources/depositBankAccounts/exports.js"
+        },
+        "./validationRules/senders": {
+            "import": {
+                "types": "./dist/esm/api/resources/validationRules/resources/senders/exports.d.mts",
+                "default": "./dist/esm/api/resources/validationRules/resources/senders/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/validationRules/resources/senders/exports.d.ts",
+                "default": "./dist/cjs/api/resources/validationRules/resources/senders/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/validationRules/resources/senders/exports.js"
+        },
+        "./validationRules/beneficiaries": {
+            "import": {
+                "types": "./dist/esm/api/resources/validationRules/resources/beneficiaries/exports.d.mts",
+                "default": "./dist/esm/api/resources/validationRules/resources/beneficiaries/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/validationRules/resources/beneficiaries/exports.d.ts",
+                "default": "./dist/cjs/api/resources/validationRules/resources/beneficiaries/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/validationRules/resources/beneficiaries/exports.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "dist",
+        "reference.md",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "format": "biome format --write --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "format:check": "biome format --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint": "biome lint --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint:fix": "biome lint --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "check": "biome check --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "check:fix": "biome check --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "build": "pnpm build:cjs && pnpm build:esm",
+        "build:cjs": "tsc --project ./tsconfig.cjs.json",
+        "build:esm": "tsc --project ./tsconfig.esm.json && node scripts/rename-to-esm-files.js dist/esm",
+        "test": "vitest",
+        "test:unit": "vitest --project unit",
+        "test:wire": "vitest --project wire"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "webpack": "^5.105.4",
+        "ts-loader": "^9.5.4",
+        "vitest": "^4.1.1",
+        "msw": "2.11.2",
+        "@types/node": "^20.0.0",
+        "typescript": "~5.9.3",
+        "@biomejs/biome": "2.4.10"
+    },
+    "browser": {
+        "fs": false,
+        "os": false,
+        "path": false,
+        "stream": false,
+        "crypto": false
+    },
+    "packageManager": "pnpm@10.33.0",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "sideEffects": false
+}
