@@ -2,10 +2,11 @@
 
 [![npm shield](https://img.shields.io/npm/v/mesta)](https://www.npmjs.com/package/mesta)
 
-The Mesta TypeScript library provides convenient access to the Mesta APIs from TypeScript.
+The official Mesta client library. It is generated from the Mesta OpenAPI specification and updated with every API release. Each method calls one API endpoint. For end-to-end flows such as onboarding a sender or making a payout, follow the guides at https://docs.mesta.xyz.
 
 ## Table of Contents
 
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Reference](#reference)
 - [Usage](#usage)
@@ -24,7 +25,10 @@ The Mesta TypeScript library provides convenient access to the Mesta APIs from T
   - [Custom Fetch](#custom-fetch)
   - [Custom Fetcher](#custom-fetcher)
   - [Runtime Compatibility](#runtime-compatibility)
-- [Contributing](#contributing)
+
+## Documentation
+
+API reference documentation is available [here](https://docs.mesta.xyz).
 
 ## Installation
 
@@ -312,13 +316,10 @@ The SDK works in the following runtimes:
 - Bun 1.0+
 - React Native
 
+## Retries and writes
 
-## Contributing
+The client retries a request up to two times on 408, 429 and 5xx responses, with backoff and jitter. The Mesta API does not accept an idempotency key yet, so a retried write, for example creating an order or a beneficiary, can be processed twice if the first attempt reached the server before it failed. Until idempotency keys are available, disable retries on writes and handle the error in your code:
 
-While we value open-source contributions to this SDK, this library is generated programmatically.
-Additions made directly to this library would have to be moved over to our generation code,
-otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
-a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
-an issue first to discuss with us!
-
-On the other hand, contributions to the README are always very welcome!
+```ts
+await client.orders.create({ ... }, { maxRetries: 0 });
+```
