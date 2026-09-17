@@ -1,6 +1,6 @@
 # Mesta TypeScript Library
 
-[![npm shield](https://img.shields.io/npm/v/mesta)](https://www.npmjs.com/package/mesta)
+[![npm shield](https://img.shields.io/npm/v/@mestafi/sdk)](https://www.npmjs.com/package/@mestafi/sdk)
 
 The official Mesta client library. It is generated from the Mesta OpenAPI specification and updated with every API release. Each method calls one API endpoint. For end-to-end flows such as onboarding a sender or making a payout, follow the guides at https://docs.mesta.xyz.
 
@@ -34,7 +34,7 @@ API reference documentation is available [here](https://docs.mesta.xyz).
 ## Installation
 
 ```sh
-npm i -s mesta
+npm i -s @mestafi/sdk
 ```
 
 ## Reference
@@ -46,7 +46,7 @@ A full reference for this library is available [here](https://github.com/mestafi
 Instantiate and use the client with the following:
 
 ```typescript
-import { MestaClient } from "mesta";
+import { MestaClient } from "@mestafi/sdk";
 
 const client = new MestaClient({ apiKey: "YOUR_API_KEY", apiSecret: "YOUR_API_SECRET" });
 await client.merchants.acceptTerms({
@@ -59,7 +59,7 @@ await client.merchants.acceptTerms({
 This SDK allows you to configure different environments for API requests.
 
 ```typescript
-import { MestaClient, MestaEnvironment } from "mesta";
+import { MestaClient, MestaEnvironment } from "@mestafi/sdk";
 
 const client = new MestaClient({
     environment: MestaEnvironment.Production,
@@ -72,7 +72,7 @@ The SDK exports all request and response types as TypeScript interfaces. Simply 
 following namespace:
 
 ```typescript
-import { Mesta } from "mesta";
+import { Mesta } from "@mestafi/sdk";
 
 const request: Mesta.GetMerchantsRequest = {
     ...
@@ -85,7 +85,7 @@ When the API returns a non-success status code (4xx or 5xx response), a subclass
 will be thrown.
 
 ```typescript
-import { MestaError } from "mesta";
+import { MestaError } from "@mestafi/sdk";
 
 try {
     await client.merchants.acceptTerms(...);
@@ -106,7 +106,7 @@ try {
 This SDK supports direct imports of subpackage clients, which allows JavaScript bundlers to tree-shake and include only the imported subpackage code. This results in much smaller bundle sizes.
 
 ```typescript
-import { MerchantsClient } from 'mesta/merchants';
+import { MerchantsClient } from '@mestafi/sdk/merchants';
 
 const client = new MerchantsClient({...});
 ```
@@ -116,7 +116,7 @@ const client = new MerchantsClient({...});
 If you would like to send additional headers as part of the request, use the `headers` request option.
 
 ```typescript
-import { MestaClient } from "mesta";
+import { MestaClient } from "@mestafi/sdk";
 
 const client = new MestaClient({
     ...
@@ -211,7 +211,7 @@ console.log(rawResponse.headers['X-My-Header']);
 The SDK supports logging. You can configure the logger by passing in a `logging` object to the client options.
 
 ```typescript
-import { MestaClient, logging } from "mesta";
+import { MestaClient, logging } from "@mestafi/sdk";
 
 const client = new MestaClient({
     ...
@@ -295,7 +295,7 @@ The SDK provides a way for you to customize the underlying HTTP client / Fetch f
 unsupported environment, this provides a way for you to break glass and ensure the SDK works.
 
 ```typescript
-import { MestaClient } from "mesta";
+import { MestaClient } from "@mestafi/sdk";
 
 const client = new MestaClient({
     ...
@@ -325,4 +325,5 @@ The client retries a request up to two times on 408, 429 and 5xx responses, with
 ```ts
 await client.orders.create({ ... }, { maxRetries: 0 });
 ```
+
 

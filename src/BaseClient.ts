@@ -68,9 +68,9 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
     const headers = mergeHeaders(
         {
             "X-Mesta-Language": "JavaScript",
-            "X-Mesta-SDK-Name": "mesta",
-            "X-Mesta-SDK-Version": "0.1.0",
-            "User-Agent": "mesta/0.1.0",
+            "X-Mesta-SDK-Name": "@mestafi/sdk",
+            "X-Mesta-SDK-Version": "0.1.1",
+            "User-Agent": "@mestafi/sdk/0.1.1",
             "X-Mesta-Runtime": core.RUNTIME.type,
             "X-Mesta-Runtime-Version": core.RUNTIME.version,
             "x-api-secret": options?.apiSecret,
