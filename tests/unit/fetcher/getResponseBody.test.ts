@@ -78,12 +78,12 @@ describe("Test getResponseBody", () => {
             const mockStream = new ReadableStream();
             const mockResponse = new Response(mockStream);
             const result = (await getResponseBody(mockResponse, "sse")) as ReadableStream & {
-                __mesta_response_ref?: Response;
+                __fern_response_ref?: Response;
             };
             // Pins the parent Response so undici's FinalizationRegistry can't GC it and cancel the stream.
-            expect(result.__mesta_response_ref).toBe(mockResponse);
+            expect(result.__fern_response_ref).toBe(mockResponse);
             // The pin must be non-enumerable so it does not leak through JSON.stringify or Object.keys.
-            const descriptor = Object.getOwnPropertyDescriptor(result, "__mesta_response_ref");
+            const descriptor = Object.getOwnPropertyDescriptor(result, "__fern_response_ref");
             expect(descriptor?.enumerable).toBe(false);
         }
     });
@@ -114,10 +114,10 @@ describe("Test getResponseBody", () => {
         const mockStream = new ReadableStream();
         const mockResponse = new Response(mockStream);
         const result = (await getResponseBody(mockResponse, "streaming")) as ReadableStream & {
-            __mesta_response_ref?: Response;
+            __fern_response_ref?: Response;
         };
-        expect(result.__mesta_response_ref).toBe(mockResponse);
-        const descriptor = Object.getOwnPropertyDescriptor(result, "__mesta_response_ref");
+        expect(result.__fern_response_ref).toBe(mockResponse);
+        const descriptor = Object.getOwnPropertyDescriptor(result, "__fern_response_ref");
         expect(descriptor?.enumerable).toBe(false);
     });
 });
