@@ -125,16 +125,16 @@ describe("makePassthroughRequest", () => {
                     headers: { "Content-Type": "application/json" },
                 },
                 {
-                    headers: { "X-Fern-Language": "JavaScript" },
+                    headers: { "X-Mesta-Language": "JavaScript" },
                     fetch: mockFetch,
                 },
             );
             const [, calledOptions] = mockFetch.mock.calls[0];
             const headers = calledOptions.headers;
             expect(headers["content-type"]).toBe("application/json");
-            expect(headers["x-fern-language"]).toBe("JavaScript");
+            expect(headers["x-mesta-language"]).toBe("JavaScript");
             expect(headers["Content-Type"]).toBeUndefined();
-            expect(headers["X-Fern-Language"]).toBeUndefined();
+            expect(headers["X-Mesta-Language"]).toBeUndefined();
         });
 
         it("should handle Headers object in init", async () => {
