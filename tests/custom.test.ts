@@ -1,5 +1,5 @@
 /**
- * Custom tests for this SDK. Add tests here; the generated tests live alongside.
+ * Custom tests for this SDK. Add your own tests here.
  */
 describe("test", () => {
     it("default", () => {
