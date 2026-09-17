@@ -1,5 +1,6 @@
 # Mesta TypeScript Library
 
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fmestafi%2Fmesta-typescript)
 [![npm shield](https://img.shields.io/npm/v/@mestafi/sdk)](https://www.npmjs.com/package/@mestafi/sdk)
 
 The official Mesta client library. It is generated from the Mesta OpenAPI specification and updated with every API release. Each method calls one API endpoint. For end-to-end flows such as onboarding a sender or making a payout, follow the guides at https://docs.mesta.xyz.
@@ -325,5 +326,6 @@ The client retries a request up to two times on 408, 429 and 5xx responses, with
 ```ts
 await client.orders.create({ ... }, { maxRetries: 0 });
 ```
+
 
 
