@@ -8,7 +8,7 @@ import type * as Mesta from "../../../../index.js";
 export interface ListSendersRequest {
     /** Filter senders by specific ID */
     id?: string;
-    /** Filter senders by their verification status */
+    /** Filter senders by account status; kyc.status or kyb.status reports verification separately */
     status?: Mesta.ListSendersRequestStatus;
     /** Records per page */
     pageSize?: number;

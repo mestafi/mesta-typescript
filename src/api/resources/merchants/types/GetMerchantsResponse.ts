@@ -46,7 +46,7 @@ export namespace GetMerchantsResponse {
         /** Source of deposits for the merchant (e.g., 'sender') */
         depositSource?: (string | null) | undefined;
         /** Fiat deposit bank accounts assigned to this merchant */
-        depositBankAccounts?: Record<string, unknown>[] | undefined;
+        depositBankAccounts?: Data.DepositBankAccounts.Item[] | undefined;
     }
 
     export namespace Data {
@@ -133,6 +133,15 @@ export namespace GetMerchantsResponse {
             identificationNumber?: (string | null) | undefined;
             /** Birth date of the UBO */
             birthDate?: (string | null) | undefined;
+        }
+
+        export type DepositBankAccounts = DepositBankAccounts.Item[];
+
+        export namespace DepositBankAccounts {
+            export interface Item {
+                /** Sandbox only, and always `true`: these deposit instructions are sample data. The holder, bank and account details receive nothing, so never send a real transfer to them; add funds with a simulated deposit (`POST /v1/simulate/deposits`) instead. Absent in production. */
+                isTestData?: boolean | undefined;
+            }
         }
     }
 }

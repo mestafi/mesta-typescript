@@ -14,6 +14,8 @@ export interface SenderVirtualAccount {
     sortCode?: (string | null) | undefined;
     currency?: SenderVirtualAccount.Currency | undefined;
     status?: string | undefined;
+    /** Sandbox only, and always `true`: these deposit instructions are sample data. The holder, bank and account details receive nothing, so never send a real transfer to them; add funds with a simulated deposit (`POST /v1/simulate/deposits`) instead. Absent in production. */
+    isTestData?: boolean | undefined;
 }
 
 export namespace SenderVirtualAccount {

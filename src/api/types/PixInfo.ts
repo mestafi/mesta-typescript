@@ -1,6 +1,6 @@
 
 export interface PixInfo {
-    /** PIX Key ID */
+    /** PIX key identifier */
     pixKeyId: string;
     /** Tax ID */
     taxId: string;

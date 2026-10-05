@@ -7,7 +7,9 @@ import { MerchantsClient } from "./api/resources/merchants/client/Client.js";
 import { OrdersClient } from "./api/resources/orders/client/Client.js";
 import { PaymentMethodsClient } from "./api/resources/paymentMethods/client/Client.js";
 import { QuotesClient } from "./api/resources/quotes/client/Client.js";
+import { SandboxClient } from "./api/resources/sandbox/client/Client.js";
 import { SendersClient } from "./api/resources/senders/client/Client.js";
+import { SimulateClient } from "./api/resources/simulate/client/Client.js";
 import { TransfersClient } from "./api/resources/transfers/client/Client.js";
 import { ValidationRulesClient } from "./api/resources/validationRules/client/Client.js";
 import { WalletAddressesClient } from "./api/resources/walletAddresses/client/Client.js";
@@ -37,6 +39,8 @@ export class MestaClient {
     protected _auth: AuthClient | undefined;
     protected _apiKeys: ApiKeysClient | undefined;
     protected _transfers: TransfersClient | undefined;
+    protected _sandbox: SandboxClient | undefined;
+    protected _simulate: SimulateClient | undefined;
 
     constructor(options: MestaClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -92,6 +96,14 @@ export class MestaClient {
 
     public get transfers(): TransfersClient {
         return (this._transfers ??= new TransfersClient(this._options));
+    }
+
+    public get sandbox(): SandboxClient {
+        return (this._sandbox ??= new SandboxClient(this._options));
+    }
+
+    public get simulate(): SimulateClient {
+        return (this._simulate ??= new SimulateClient(this._options));
     }
 
     /**

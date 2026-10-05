@@ -26,6 +26,8 @@ export namespace GetDepositBankAccountOrdersResponse {
         sortCode?: string | undefined;
         /** Routing details for the bank account. Present for USD wire transfers. */
         routingDetails?: Data.RoutingDetails.Item[] | undefined;
+        /** Sandbox only, and always `true`: these deposit instructions are sample data. The holder, bank and account details receive nothing, so never send a real transfer to them; add funds with a simulated deposit (`POST /v1/simulate/deposits`) instead. Absent in production. */
+        isTestData?: boolean | undefined;
     }
 
     export namespace Data {

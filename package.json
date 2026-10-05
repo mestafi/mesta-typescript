@@ -169,6 +169,28 @@
             },
             "default": "./dist/cjs/api/resources/transfers/exports.js"
         },
+        "./sandbox": {
+            "import": {
+                "types": "./dist/esm/api/resources/sandbox/exports.d.mts",
+                "default": "./dist/esm/api/resources/sandbox/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/sandbox/exports.d.ts",
+                "default": "./dist/cjs/api/resources/sandbox/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/sandbox/exports.js"
+        },
+        "./simulate": {
+            "import": {
+                "types": "./dist/esm/api/resources/simulate/exports.d.mts",
+                "default": "./dist/esm/api/resources/simulate/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/simulate/exports.d.ts",
+                "default": "./dist/cjs/api/resources/simulate/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/simulate/exports.js"
+        },
         "./beneficiaries/documents": {
             "import": {
                 "types": "./dist/esm/api/resources/beneficiaries/resources/documents/exports.d.mts",
@@ -245,6 +267,17 @@
                 "default": "./dist/cjs/api/resources/orders/resources/documents/exports.js"
             },
             "default": "./dist/cjs/api/resources/orders/resources/documents/exports.js"
+        },
+        "./sandbox/claims": {
+            "import": {
+                "types": "./dist/esm/api/resources/sandbox/resources/claims/exports.d.mts",
+                "default": "./dist/esm/api/resources/sandbox/resources/claims/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/sandbox/resources/claims/exports.d.ts",
+                "default": "./dist/cjs/api/resources/sandbox/resources/claims/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/sandbox/resources/claims/exports.js"
         },
         "./senders/associates": {
             "import": {
