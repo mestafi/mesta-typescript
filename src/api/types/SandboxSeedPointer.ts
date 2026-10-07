@@ -1,7 +1,7 @@
 
 export interface SandboxSeedPointer {
     status: SandboxSeedPointer.Status;
-    /** Poll GET /v1/sandbox/sessions/{id}. */
+    /** Poll `GET /v1/sandbox/sessions/{id}`. */
     url: string;
 }
 

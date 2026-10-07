@@ -6,7 +6,7 @@ export interface SimulateDepositResponse {
 
 export namespace SimulateDepositResponse {
     export interface Data {
-        /** The deposit's id; readable at GET /v1/merchant/fiat-deposits/{id} or /v1/merchant/stablecoin-deposits/{id}. */
+        /** The deposit's id; readable at `GET /v1/merchant/fiat-deposits/{id}` or `/v1/merchant/stablecoin-deposits/{id}`. */
         id: string;
         ownerType: Data.OwnerType;
         ownerId: string;

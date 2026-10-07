@@ -11,11 +11,11 @@ export interface SandboxFixtures {
     beneficiaries: SandboxFixtures.Beneficiaries.Item[];
     orders: SandboxFixtures.Orders.Item[];
     webhook: SandboxFixtures.Webhook;
-    /** The address array when provisioned; empty while no wallet exists. The state is the session read's `wallets` block and the `wallets` entry of `seed.steps`. */
+    /** The address array when provisioned; empty while no wallet exists, as it is until test-network wallets are offered. The state is the session read's `wallets` block and the `wallets` entry of `seed.steps`. */
     wallets: Mesta.SandboxWallet[];
     balances: SandboxFixtures.Balances.Item[];
-    /** The values that force outcomes, as documented at https://docs.mesta.xyz/docs/sandbox-simulation. */
-    magicValues: Record<string, unknown>;
+    /** The values that force outcomes, in the order of https://docs.mesta.xyz/docs/sandbox-simulation#magic-values. Public fields only. */
+    magicValues: SandboxFixtures.MagicValues.Item[];
 }
 
 export namespace SandboxFixtures {
@@ -87,6 +87,23 @@ export namespace SandboxFixtures {
             owner: string;
             currency: string;
             amount: string;
+        }
+    }
+
+    export type MagicValues = MagicValues.Item[];
+
+    export namespace MagicValues {
+        export interface Item {
+            /** Stable key, for example `quote_source_amount_cents_99`. */
+            key: string;
+            /** What to send, for example `.99` or `SANDBOX DECLINE`. */
+            value: string;
+            /** Where the value goes, for example "the cents of `sourceAmount` in `POST /v1/quotes`". */
+            appliesTo: string;
+            /** The events it produces, in order when one follows another (for example `["order:success", "order:returned"]`). Where the effect depends on the object, the description says which event applies to a person, a business or a beneficiary. */
+            outcome: string[];
+            /** One sentence saying what the value does. */
+            description: string;
         }
     }
 }

@@ -1,9 +1,12 @@
 
 import type * as core from "../../core/index.js";
 import * as errors from "../../errors/index.js";
+import type * as Mesta from "../index.js";
 
 export class ServiceUnavailableError extends errors.MestaError {
-    constructor(body?: unknown, rawResponse?: core.RawResponse) {
+    public declare readonly body: Mesta.ErrorResponse;
+
+    constructor(body: Mesta.ErrorResponse, rawResponse?: core.RawResponse) {
         super({
             message: "ServiceUnavailableError",
             statusCode: 503,

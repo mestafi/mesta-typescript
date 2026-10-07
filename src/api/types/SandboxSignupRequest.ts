@@ -1,18 +1,10 @@
 
 /**
- * @example
- *     {
- *         turnstileToken: "turnstileToken",
- *         email: "email",
- *         fullName: "Example Developer",
- *         password: "password",
- *         country: "US",
- *         acceptTerms: true
- *     }
+ * Posted by the sandbox portal's sign-up form. Scripts use POST /v1/sandbox/sessions instead.
  */
 export interface SandboxSignupRequest {
     /** Optional sign-up entry point. */
-    from?: SandboxSignupRequest.From;
+    from?: SandboxSignupRequest.From | undefined;
     /** The Cloudflare Turnstile token from the form. */
     turnstileToken: string;
     email: string;

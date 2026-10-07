@@ -1,13 +1,12 @@
 
-export interface SandboxTermsNotAcceptedError {
+export interface SandboxClaimEmailOwnsSandboxError {
     /** Error details */
-    error: SandboxTermsNotAcceptedError.Error_;
+    error: SandboxClaimEmailOwnsSandboxError.Error_;
     /** Unique request identifier for debugging */
     requestId: number;
-    terms: SandboxTermsNotAcceptedError.Terms;
 }
 
-export namespace SandboxTermsNotAcceptedError {
+export namespace SandboxClaimEmailOwnsSandboxError {
     /**
      * Error details
      */
@@ -23,15 +22,8 @@ export namespace SandboxTermsNotAcceptedError {
     export namespace Error_ {
         /** Machine-readable error code */
         export const Code = {
-            TermsNotAccepted: "TERMS_NOT_ACCEPTED",
+            EmailAlreadyOwnsSandbox: "EMAIL_ALREADY_OWNS_SANDBOX",
         } as const;
         export type Code = (typeof Code)[keyof typeof Code];
-    }
-
-    export interface Terms {
-        url: string;
-        version: string;
-        /** The Sandbox privacy notice's one published location. It is linked as information and not accepted. */
-        privacyNoticeUrl: string;
     }
 }

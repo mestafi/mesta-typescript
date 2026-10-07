@@ -268,17 +268,6 @@
             },
             "default": "./dist/cjs/api/resources/orders/resources/documents/exports.js"
         },
-        "./sandbox/claims": {
-            "import": {
-                "types": "./dist/esm/api/resources/sandbox/resources/claims/exports.d.mts",
-                "default": "./dist/esm/api/resources/sandbox/resources/claims/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/sandbox/resources/claims/exports.d.ts",
-                "default": "./dist/cjs/api/resources/sandbox/resources/claims/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/sandbox/resources/claims/exports.js"
-        },
         "./senders/associates": {
             "import": {
                 "types": "./dist/esm/api/resources/senders/resources/associates/exports.d.mts",

@@ -112,7 +112,10 @@ export class SimulateClient {
                 case 429:
                     throw new Mesta.TooManyRequestsError(_response.error.body as unknown, _response.rawResponse);
                 case 503:
-                    throw new Mesta.ServiceUnavailableError(_response.error.body as unknown, _response.rawResponse);
+                    throw new Mesta.ServiceUnavailableError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.MestaError({
                         statusCode: _response.error.statusCode,
@@ -208,7 +211,10 @@ export class SimulateClient {
                 case 429:
                     throw new Mesta.TooManyRequestsError(_response.error.body as unknown, _response.rawResponse);
                 case 503:
-                    throw new Mesta.ServiceUnavailableError(_response.error.body as unknown, _response.rawResponse);
+                    throw new Mesta.ServiceUnavailableError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.MestaError({
                         statusCode: _response.error.statusCode,
@@ -298,7 +304,10 @@ export class SimulateClient {
                 case 429:
                     throw new Mesta.TooManyRequestsError(_response.error.body as unknown, _response.rawResponse);
                 case 503:
-                    throw new Mesta.ServiceUnavailableError(_response.error.body as unknown, _response.rawResponse);
+                    throw new Mesta.ServiceUnavailableError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.MestaError({
                         statusCode: _response.error.statusCode,
@@ -317,7 +326,7 @@ export class SimulateClient {
     }
 
     /**
-     * Publishes a real external event again for one of your objects, so the whole pipeline runs: queueing, signing, delivery and the delivery log. Counts against the sandbox's daily delivery budget and shares a budget of 200 calls per sandbox per rolling day with POST /v1/simulate/orders/{id}/transition. Requires `merchant:webhook-events:replay`. Sandbox only. Outbound webhook deliveries (not this HTTP response) carry `Mesta-Signature: t=<Unix seconds>,v1=<signature>` on both environments, where the signature is a lowercase hex HMAC-SHA256 over `${t}.` followed by the raw body bytes. Reject a t more than 300 seconds from the receiver clock and compare signatures in constant time. Each retry and resend has a new t and signature. `X-Webhook-Signature`, a lowercase hex HMAC-SHA256 of the raw body alone, is kept for existing production integrations; its sunset will be announced. `X-Mesta-Plane: sandbox` is sent only on sandbox deliveries and is absent on production. Sandbox deliveries make three attempts (two retries); production keeps five attempts.
+     * Publishes a real external event again for one of your objects, so the whole pipeline runs: queueing, signing, delivery and the delivery log. Counts against the sandbox's daily delivery budget and shares a budget of 200 calls per sandbox per rolling day with `POST /v1/simulate/orders/{id}/transition`. Requires `merchant:webhook-events:replay`. Sandbox only. Outbound webhook deliveries (not this HTTP response) carry `Mesta-Signature: t=<Unix seconds>,v1=<signature>` on both environments, where the signature is a lowercase hex HMAC-SHA256 over `${t}.` followed by the raw body bytes. Reject a t more than 300 seconds from the receiver clock and compare signatures in constant time. Each retry and resend has a new t and signature. Sandbox delivery bodies carry a top-level `environment`, set to `sandbox` and inside the signed bytes; production bodies carry none until the announced cutover date, then `production`. After verifying the signature, a production endpoint accepts an event with no `environment` or with `production` and rejects any other value, and a sandbox endpoint accepts only `sandbox`, so the same check keeps working through the cutover; use one endpoint and one signing key per environment. `X-Webhook-Signature`, a lowercase hex HMAC-SHA256 of the raw body alone, is kept for existing production integrations; its sunset will be announced. `X-Mesta-Plane: sandbox` is sent only on sandbox deliveries and is absent on production. Sandbox deliveries make three attempts (two retries); production keeps five attempts.
      *
      * @param {Mesta.SimulateWebhookFireRequest} request
      * @param {SimulateClient.RequestOptions} requestOptions - Request-specific configuration.
@@ -394,7 +403,10 @@ export class SimulateClient {
                 case 429:
                     throw new Mesta.TooManyRequestsError(_response.error.body as unknown, _response.rawResponse);
                 case 503:
-                    throw new Mesta.ServiceUnavailableError(_response.error.body as unknown, _response.rawResponse);
+                    throw new Mesta.ServiceUnavailableError(
+                        _response.error.body as Mesta.ErrorResponse,
+                        _response.rawResponse,
+                    );
                 default:
                     throw new errors.MestaError({
                         statusCode: _response.error.statusCode,

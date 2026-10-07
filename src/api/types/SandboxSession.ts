@@ -21,10 +21,12 @@ export interface SandboxSession {
     counts: Mesta.SandboxCounts;
     /** True while Mesta has paused the sandbox environment; every other call answers 503 SANDBOX_PAUSED meanwhile. */
     executionPaused: boolean;
-    /** The merchant wallet's state: `ready` when the four test-network addresses exist, `pending` while the wallet was skipped for vendor capacity when the sample data was added, or a request is waiting, `failed` otherwise. The `wallets` entry of `seed.steps` carries the same state; `fixtures.wallets` is empty until the addresses exist. */
+    /** The merchant wallet's state. Test-network wallets are coming soon: until they are offered, `status` is `unavailable`, `reason` is `not_offered_on_plane` and `fixtures.wallets` is empty. Once they are offered, `status` is `ready` when the wallet's addresses exist, `pending` while a request is waiting and `failed` otherwise. */
     wallets: SandboxSession.Wallets;
     keys: Mesta.SandboxKeyMetadata[];
     seed: Mesta.SandboxSeed;
+    /** The Go live request's tracker, null until the first request: `requested`, then `in_review` while Mesta reviews it, then `invited` with a production invite. */
+    productionRequest?: (SandboxSession.ProductionRequest | null) | undefined;
     /** Present only after a failed reset. The sandbox returns to its previous status with `seed.status` complete and `seed.error` set. Retry reset or delete the sandbox. */
     reset?: SandboxSession.Reset | undefined;
     fixtures?: Mesta.SandboxFixtures | undefined;
@@ -48,10 +50,12 @@ export namespace SandboxSession {
     export type Plane = (typeof Plane)[keyof typeof Plane];
 
     /**
-     * The merchant wallet's state: `ready` when the four test-network addresses exist, `pending` while the wallet was skipped for vendor capacity when the sample data was added, or a request is waiting, `failed` otherwise. The `wallets` entry of `seed.steps` carries the same state; `fixtures.wallets` is empty until the addresses exist.
+     * The merchant wallet's state. Test-network wallets are coming soon: until they are offered, `status` is `unavailable`, `reason` is `not_offered_on_plane` and `fixtures.wallets` is empty. Once they are offered, `status` is `ready` when the wallet's addresses exist, `pending` while a request is waiting and `failed` otherwise.
      */
     export interface Wallets {
         status: Wallets.Status;
+        /** Present with `unavailable`: test-network wallets are not offered in the sandbox yet. */
+        reason?: Wallets.Reason | undefined;
         /** Sender wallet usage and per-sender state, separate from the merchant wallet status. used counts senders for which a wallet provider client has been created. */
         senders: Wallets.Senders;
         /** Set when a wallet request is waiting. */
@@ -63,8 +67,14 @@ export namespace SandboxSession {
             Ready: "ready",
             Pending: "pending",
             Failed: "failed",
+            Unavailable: "unavailable",
         } as const;
         export type Status = (typeof Status)[keyof typeof Status];
+        /** Present with `unavailable`: test-network wallets are not offered in the sandbox yet. */
+        export const Reason = {
+            NotOfferedOnPlane: "not_offered_on_plane",
+        } as const;
+        export type Reason = (typeof Reason)[keyof typeof Reason];
 
         /**
          * Sender wallet usage and per-sender state, separate from the merchant wallet status. used counts senders for which a wallet provider client has been created.
@@ -95,6 +105,25 @@ export namespace SandboxSession {
                 }
             }
         }
+    }
+
+    /**
+     * The Go live request's tracker, null until the first request: `requested`, then `in_review` while Mesta reviews it, then `invited` with a production invite.
+     */
+    export interface ProductionRequest {
+        status: ProductionRequest.Status;
+        requestedAt: string;
+        /** The last status change. */
+        updatedAt: string;
+    }
+
+    export namespace ProductionRequest {
+        export const Status = {
+            Requested: "requested",
+            InReview: "in_review",
+            Invited: "invited",
+        } as const;
+        export type Status = (typeof Status)[keyof typeof Status];
     }
 
     /**

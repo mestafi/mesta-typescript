@@ -3,8 +3,10 @@ import type * as Mesta from "../index.js";
 
 export interface SandboxMachineCreated {
     status: SandboxMachineCreated.Status;
-    /** Create response only, while unclaimed. A single-use bearer capability in the URL fragment: whoever opens it owns the sandbox. */
-    claimUrl: string;
+    /** Create response only, while unclaimed, and only when the request carried no `claimEmail`. A single-use bearer capability in the URL fragment: whoever opens it owns the sandbox. */
+    claimUrl?: string | undefined;
+    /** Present instead of `claimUrl` when the request carried `claimEmail`: the claim link went to that address. */
+    claim?: SandboxMachineCreated.Claim | undefined;
     seed: SandboxMachineCreated.Seed;
     sandboxId: string;
     merchantId: string;
@@ -26,6 +28,14 @@ export namespace SandboxMachineCreated {
         Unclaimed: "unclaimed",
     } as const;
     export type Status = (typeof Status)[keyof typeof Status];
+
+    /**
+     * Present instead of `claimUrl` when the request carried `claimEmail`: the claim link went to that address.
+     */
+    export interface Claim {
+        /** The masked address the claim link was emailed to, for example `d***@example.com`. */
+        sentTo: string;
+    }
 
     export interface Seed {
         status: Seed.Status;
