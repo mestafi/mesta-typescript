@@ -91,10 +91,11 @@ export class SendersClient {
         request: Mesta.ListSendersRequest = {},
         requestOptions?: SendersClient.RequestOptions,
     ): Promise<core.WithRawResponse<Mesta.ListSendersResponse>> {
-        const { id, status, pageSize, page, sortBy, sortOrder } = request;
+        const { id, status, verificationStatus, pageSize, page, sortBy, sortOrder } = request;
         const _queryParams: Record<string, unknown> = {
             id,
             status: status != null ? status : undefined,
+            verificationStatus: verificationStatus != null ? verificationStatus : undefined,
             pageSize,
             page,
             sortBy: sortBy != null ? sortBy : undefined,

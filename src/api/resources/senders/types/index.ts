@@ -6,6 +6,7 @@ export * from "./GetSendersResponse.js";
 export * from "./ListSendersRequestSortBy.js";
 export * from "./ListSendersRequestSortOrder.js";
 export * from "./ListSendersRequestStatus.js";
+export * from "./ListSendersRequestVerificationStatus.js";
 export * from "./ListSendersResponse.js";
 export * from "./SimulateDepositSendersResponse.js";
 export * from "./SimulateVerificationResultSendersResponse.js";
