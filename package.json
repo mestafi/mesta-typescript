@@ -1,6 +1,6 @@
 {
     "name": "@mestafi/sdk",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "description": "Official Mesta TypeScript SDK",
     "author": "Mesta <support@mesta.xyz>",
     "homepage": "https://docs.mesta.xyz",
@@ -168,6 +168,28 @@
                 "default": "./dist/cjs/api/resources/transfers/exports.js"
             },
             "default": "./dist/cjs/api/resources/transfers/exports.js"
+        },
+        "./sandbox": {
+            "import": {
+                "types": "./dist/esm/api/resources/sandbox/exports.d.mts",
+                "default": "./dist/esm/api/resources/sandbox/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/sandbox/exports.d.ts",
+                "default": "./dist/cjs/api/resources/sandbox/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/sandbox/exports.js"
+        },
+        "./simulate": {
+            "import": {
+                "types": "./dist/esm/api/resources/simulate/exports.d.mts",
+                "default": "./dist/esm/api/resources/simulate/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/simulate/exports.d.ts",
+                "default": "./dist/cjs/api/resources/simulate/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/simulate/exports.js"
         },
         "./beneficiaries/documents": {
             "import": {

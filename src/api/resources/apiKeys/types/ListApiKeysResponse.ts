@@ -11,6 +11,11 @@ export namespace ListApiKeysResponse {
 
     export namespace Data {
         export interface Item {
+            kind?: Item.Kind | undefined;
+            /** Nullable expiry. Verification clears it only for keys flagged expires_with_sandbox; a retiring predecessor keeps its 24-hour deadline and is never revived. */
+            expiresAt?: (string | null) | undefined;
+            /** Null before first use; updated at most once a minute. */
+            lastUsedAt?: (string | null) | undefined;
             /** Unique identifier for the API key */
             id?: string | undefined;
             /** Timestamp when the API key was created */
@@ -23,6 +28,15 @@ export namespace ListApiKeysResponse {
             merchantId?: string | undefined;
             /** List of permissions granted to this API key */
             permissions?: string[] | undefined;
+        }
+
+        export namespace Item {
+            export const Kind = {
+                Standard: "standard",
+                Agent: "agent",
+                Docs: "docs",
+            } as const;
+            export type Kind = (typeof Kind)[keyof typeof Kind];
         }
     }
 

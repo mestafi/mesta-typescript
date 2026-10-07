@@ -39,6 +39,7 @@ export namespace ListWebhooksResponse {
                 export const Item = {
                     Order: "order:*",
                     OrderCreated: "order:created",
+                    OrderAwaitingBeneficiaryVerification: "order:awaiting_beneficiary_verification",
                     OrderAwaitingFunds: "order:awaiting_funds",
                     OrderAwaitingFundsTimeout: "order:awaiting_funds_timeout",
                     OrderFundsReceived: "order:funds_received",
@@ -47,6 +48,7 @@ export namespace ListWebhooksResponse {
                     OrderSuccess: "order:success",
                     OrderFailed: "order:failed",
                     OrderCancelled: "order:cancelled",
+                    OrderRejected: "order:rejected",
                     OrderReturned: "order:returned",
                     OrderProofOfPaymentReceived: "order:proof_of_payment_received",
                     OrderInvoiceReviewRequired: "order:invoice_review_required",
@@ -72,6 +74,7 @@ export namespace ListWebhooksResponse {
                     BeneficiaryVerificationApproved: "beneficiary:verification_approved",
                     BeneficiaryVerificationDeclined: "beneficiary:verification_declined",
                     FiatDepositSettled: "fiat_deposit:settled",
+                    FiatDepositRejected: "fiat_deposit:rejected",
                     StablecoinDepositSettled: "stablecoin_deposit:settled",
                     StablecoinDepositRejected: "stablecoin_deposit:rejected",
                 } as const;
