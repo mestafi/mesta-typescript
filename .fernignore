@@ -1,2 +1,4 @@
 AGENTS.md
+.github/workflows/ci.yml
+tests/tsconfig.h5.json
 tests/wire/sandbox-round14.test.ts

@@ -42,6 +42,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Type-check the hand-written tests
+        run: pnpm exec tsc -p tests/tsconfig.h5.json
+
       - name: Test
         run: pnpm test
 
