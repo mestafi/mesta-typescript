@@ -4148,6 +4148,74 @@ await client.merchants.fiatDeposits.get({
 </dl>
 </details>
 
+## Merchants Documents
+<details><summary><code>client.merchants.documents.<a href="/src/api/resources/merchants/resources/documents/client/Client.ts">getPresignedUrl</a>({ ...params }) -> Mesta.GetPresignedUrlDocumentsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a temporary presigned URL for downloading a merchant's own KYB document, or an identity document belonging to one of its UBOs. The URL expires after 300 seconds.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.merchants.documents.getPresignedUrl({
+    id: "id",
+    documentId: "documentId",
+    type: "merchant"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Mesta.merchants.GetPresignedUrlDocumentsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DocumentsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Merchants SourceWalletAddresses
 <details><summary><code>client.merchants.sourceWalletAddresses.<a href="/src/api/resources/merchants/resources/sourceWalletAddresses/client/Client.ts">list</a>({ ...params }) -> Mesta.ListSourceWalletAddressesResponse</code></summary>
 <dl>
@@ -5837,6 +5905,72 @@ await client.senders.documents.delete({
 <dd>
 
 **request:** `Mesta.senders.DeleteDocumentsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `DocumentsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.senders.documents.<a href="/src/api/resources/senders/resources/documents/client/Client.ts">getPresignedUrl</a>({ ...params }) -> Mesta.GetPresignedUrlDocumentsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a temporary presigned URL for downloading a sender document. The URL expires after 5 minutes.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.senders.documents.getPresignedUrl({
+    id: "id",
+    documentId: "documentId"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Mesta.senders.GetPresignedUrlDocumentsRequest` 
     
 </dd>
 </dl>

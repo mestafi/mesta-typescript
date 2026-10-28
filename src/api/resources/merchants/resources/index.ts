@@ -1,6 +1,9 @@
 export * from "./accounts/client/requests/index.js";
 export * as accounts from "./accounts/index.js";
 export * from "./accounts/types/index.js";
+export * from "./documents/client/requests/index.js";
+export * as documents from "./documents/index.js";
+export * from "./documents/types/index.js";
 export * from "./fiatDeposits/client/requests/index.js";
 export * as fiatDeposits from "./fiatDeposits/index.js";
 export * from "./fiatDeposits/types/index.js";
