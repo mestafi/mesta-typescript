@@ -8,6 +8,7 @@ import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCode
 import * as errors from "../../../../errors/index.js";
 import * as Mesta from "../../../index.js";
 import { AccountsClient } from "../resources/accounts/client/Client.js";
+import { DocumentsClient } from "../resources/documents/client/Client.js";
 import { FiatDepositsClient } from "../resources/fiatDeposits/client/Client.js";
 import { SourceWalletAddressesClient } from "../resources/sourceWalletAddresses/client/Client.js";
 import { StablecoinDepositsClient } from "../resources/stablecoinDeposits/client/Client.js";
@@ -25,6 +26,7 @@ export class MerchantsClient {
     protected _transactions: TransactionsClient | undefined;
     protected _stablecoinDeposits: StablecoinDepositsClient | undefined;
     protected _fiatDeposits: FiatDepositsClient | undefined;
+    protected _documents: DocumentsClient | undefined;
     protected _sourceWalletAddresses: SourceWalletAddressesClient | undefined;
 
     constructor(options: MerchantsClient.Options) {
@@ -45,6 +47,10 @@ export class MerchantsClient {
 
     public get fiatDeposits(): FiatDepositsClient {
         return (this._fiatDeposits ??= new FiatDepositsClient(this._options));
+    }
+
+    public get documents(): DocumentsClient {
+        return (this._documents ??= new DocumentsClient(this._options));
     }
 
     public get sourceWalletAddresses(): SourceWalletAddressesClient {
