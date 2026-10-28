@@ -20,7 +20,7 @@ describe("DocumentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
+            .get("/v2/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
@@ -46,7 +46,7 @@ describe("DocumentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
+            .get("/v2/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
             .respondWith()
             .statusCode(400)
             .jsonBody(rawResponseBody)
@@ -73,7 +73,7 @@ describe("DocumentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
+            .get("/v2/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
             .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
@@ -100,7 +100,7 @@ describe("DocumentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
+            .get("/v2/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
             .respondWith()
             .statusCode(403)
             .jsonBody(rawResponseBody)
@@ -127,7 +127,7 @@ describe("DocumentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
+            .get("/v2/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
             .respondWith()
             .statusCode(404)
             .jsonBody(rawResponseBody)
@@ -154,7 +154,7 @@ describe("DocumentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
+            .get("/v2/beneficiaries/beneficiaryId/documents/documentId/presigned-url")
             .respondWith()
             .statusCode(500)
             .jsonBody(rawResponseBody)

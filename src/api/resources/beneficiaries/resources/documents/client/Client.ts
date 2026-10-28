@@ -52,10 +52,7 @@ export class DocumentsClient {
         request: Mesta.beneficiaries.GetPresignedUrlDocumentsRequest,
         requestOptions?: DocumentsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Mesta.beneficiaries.GetPresignedUrlDocumentsResponse>> {
-        const { beneficiaryId, documentId, type: type_ } = request;
-        const _queryParams: Record<string, unknown> = {
-            type: type_ != null ? type_ : undefined,
-        };
+        const { beneficiaryId, documentId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -68,15 +65,11 @@ export class DocumentsClient {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.MestaEnvironment.Production,
-                `v1/beneficiaries/${core.url.encodePathParam(beneficiaryId)}/documents/${core.url.encodePathParam(documentId)}/presigned-url`,
+                `v2/beneficiaries/${core.url.encodePathParam(beneficiaryId)}/documents/${core.url.encodePathParam(documentId)}/presigned-url`,
             ),
             method: "GET",
             headers: _headers,
-            queryString: core.url
-                .queryBuilder()
-                .addMany(_queryParams)
-                .mergeAdditional(requestOptions?.queryParams)
-                .build(),
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -118,7 +111,7 @@ export class DocumentsClient {
             _response.error,
             _response.rawResponse,
             "GET",
-            "/v1/beneficiaries/{beneficiaryId}/documents/{documentId}/presigned-url",
+            "/v2/beneficiaries/{beneficiaryId}/documents/{documentId}/presigned-url",
         );
     }
 

@@ -1,6 +1,4 @@
 
-import type * as Mesta from "../../../../../../index.js";
-
 /**
  * @example
  *     {
@@ -13,6 +11,4 @@ export interface GetPresignedUrlDocumentsRequest {
     beneficiaryId: string;
     /** Unique identifier of the document */
     documentId: string;
-    /** Type of document to retrieve */
-    type?: Mesta.beneficiaries.GetPresignedUrlDocumentsRequestType;
 }
