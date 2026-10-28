@@ -3,7 +3,7 @@ import { getBinaryResponse } from "./BinaryResponse.js";
 
 // Pins the upstream Response so undici's FinalizationRegistry can't GC it and cancel the body stream.
 function retainResponse(target: object, response: Response): void {
-    Object.defineProperty(target, "__fern_response_ref", {
+    Object.defineProperty(target, "__mesta_response_ref", {
         value: response,
         enumerable: false,
         configurable: true,

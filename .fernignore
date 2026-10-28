@@ -1,4 +1,0 @@
-# Specify files that shouldn't be modified by Fern
-.fern/replay.lock
-.fern/replay.yml
-.gitattributes
