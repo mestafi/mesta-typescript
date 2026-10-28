@@ -730,6 +730,7 @@ describe("BeneficiariesClient", () => {
                     type: "type",
                     submittedAt: "2024-01-15T09:30:00Z",
                 },
+                documents: [{}],
             },
             requestId: 1,
         };

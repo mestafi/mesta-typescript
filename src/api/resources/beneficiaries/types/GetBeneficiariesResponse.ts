@@ -50,6 +50,8 @@ export namespace GetBeneficiariesResponse {
         beneficiaryRelationship?: Mesta.BeneficiaryRelationship | undefined;
         purposeOfPayment?: Mesta.PurposeOfPayment | undefined;
         purposeOfPaymentDocument?: Mesta.PurposeOfPaymentDocument | undefined;
+        /** The beneficiary's general document store: evidence collected through a request for information, such as registration or proof of address. Identity files stay on `identity`. */
+        documents?: Data.Documents.Item[] | undefined;
     }
 
     export namespace Data {
@@ -146,5 +148,19 @@ export namespace GetBeneficiariesResponse {
             Other: "other",
         } as const;
         export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType];
+        export type Documents = Documents.Item[];
+
+        export namespace Documents {
+            export interface Item {
+                /** Document identifier. Pass it to the beneficiary document presigned-url route to download the file. */
+                id?: string | undefined;
+                /** Original file name */
+                fileName?: string | undefined;
+                /** Document type, as the request for information that collected it named the item */
+                type?: string | undefined;
+                /** When the document was submitted */
+                submittedAt?: string | undefined;
+            }
+        }
     }
 }

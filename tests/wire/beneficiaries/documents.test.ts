@@ -14,7 +14,7 @@ describe("DocumentsClient", () => {
         });
 
         const rawResponseBody = {
-            data: { url: "url", fileName: "fileName", type: "identity", expiresIn: 300 },
+            data: { url: "url", fileName: "fileName", type: "type", blob: "blob", expiresIn: 300 },
             requestId: 1,
         };
 
@@ -177,7 +177,10 @@ describe("DocumentsClient", () => {
             environment: server.baseUrl,
         });
 
-        const rawResponseBody = { url: "url", fileName: "fileName", type: "type", blob: "blob", expiresIn: 300 };
+        const rawResponseBody = {
+            data: { url: "url", fileName: "fileName", type: "type", blob: "blob", expiresIn: 300 },
+            requestId: 1,
+        };
 
         server
             .mockEndpoint()

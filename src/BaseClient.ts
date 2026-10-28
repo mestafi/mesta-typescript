@@ -69,8 +69,8 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
         {
             "X-Mesta-Language": "JavaScript",
             "X-Mesta-SDK-Name": "@mestafi/sdk",
-            "X-Mesta-SDK-Version": "0.1.3",
-            "User-Agent": "@mestafi/sdk/0.1.3",
+            "X-Mesta-SDK-Version": "0.1.4",
+            "User-Agent": "@mestafi/sdk/0.1.4",
             "X-Mesta-Runtime": core.RUNTIME.type,
             "X-Mesta-Runtime-Version": core.RUNTIME.version,
             "x-api-secret": options?.apiSecret,
